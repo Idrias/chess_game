@@ -21,8 +21,7 @@ class Figure {
   }
   
   void draw(int drawX, int drawY) { faction = col == thisPlayerFaction ? FRIENDLY : HOSTILE; // DEBUG
-    if(!picked) image(image, drawX, drawY);
-    else image(image, mouseX, mouseY+20);
+    image(image, drawX, drawY);
   }
   
   

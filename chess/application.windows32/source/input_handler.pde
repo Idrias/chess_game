@@ -5,7 +5,6 @@ class InputHandler {
     if(mousePressed && !registeredMouseClick) {
       registeredMouseClick = true;
     
-      if(mouseButton == RIGHT) {if(net!=null) net.close(); game.state = MENU; return;}
       
       switch(game.state) {
         case MENU: menu.checkclick(); break;
@@ -23,6 +22,9 @@ class InputHandler {
 
 
   void keyPressed() {
+  if(key == ESC)
+      {print("HI"); if(net!=null) net.close(); game.state = MENU; key='0'; return;}
+      
   if(game.state == SERVERBROWSER) {
                 //if(keyCode == TAB) for(int i = 0; i<browser.textboxes.size(); i++) if(browser.textboxes.get(i).active) {browser.textboxes.get(i).active = false; browser.textboxes.get((i+1)%browser.textboxes.size()).active = true;}
                 if(key==TAB || key==ENTER || key==RETURN || key==ESC || key==DELETE || key==SHIFT || key==ALT || key==CODED) return;
