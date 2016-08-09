@@ -150,7 +150,7 @@ def dcFromGame(c):
             g.playerWHITE = None
             sendToAll(g.id, "UI UPDATE", ["NAME", WHITE, "[EMPTY]"])
             print("WHITE disconnected from " + str(g.id))
-        elif g.playerWHITE is not None and g.playerBLACK.client == c:
+        elif g.playerBLACK is not None and g.playerBLACK.client == c:
             g.playerBLACK = None
             sendToAll(g.id, "UI UPDATE", ["NAME", BLACK, "[EMPTY]"])
             print("BLACK disconnected from " + str(g.id))
