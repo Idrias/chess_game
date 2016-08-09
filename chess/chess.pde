@@ -10,6 +10,7 @@ void setup() {
   textAlign(CENTER, CENTER);
   
   //fegame.state = CONNECTED;
+  // THIS CHANGED
 }
 
 void draw() {
