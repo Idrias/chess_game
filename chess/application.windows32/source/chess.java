@@ -19,6 +19,7 @@ public class chess extends PApplet {
 Networker net;
 
 public void setup() {
+  new Message();
    
   frameRate(144);
   init_vars();
@@ -28,7 +29,7 @@ public void setup() {
   textAlign(CENTER, CENTER);
   
   //fegame.state = CONNECTED;
-  // THIS CHANGED
+  // TODO IMPLEMENT Escape Menu
 }
 
 public void draw() {

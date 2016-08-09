@@ -1,6 +1,7 @@
 Networker net;
 
 void setup() {
+  new Message();
   size(1000, 690); 
   frameRate(144);
   init_vars();
@@ -10,7 +11,7 @@ void setup() {
   textAlign(CENTER, CENTER);
   
   //fegame.state = CONNECTED;
-  // THIS CHANGED
+  // TODO IMPLEMENT Escape Menu
 }
 
 void draw() {
