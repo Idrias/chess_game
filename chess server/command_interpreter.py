@@ -1,9 +1,12 @@
-import file_operations as fileops
 import XML
-from player import *
-from game import *
-import networking as net
 
+import file_operations as fileops
+import networking as net
+from game import *
+from player import *
+
+
+# Gittest
 
 def interpret(m):
     if m.command == "MOVEMENT REQUEST":
