@@ -27,9 +27,11 @@ def interpret(m):
         net.sendToAll(g.id, "REMOVE FIGURE", [fromPosX, fromPosY])
         net.sendToAll(g.id, "ADD FIGURE", [fig.col, fig.type, toPosX, toPosY, fig.hasMoved])
 
+        fig.posx = toPosX
+        fig.posy = toPosY
+
         fieldFrom.figure = None
         fieldTo.figure = fig
-
 
         g.whoseturn = WHITE if g.whoseturn == BLACK else BLACK
         net.sendToAll(g.id, "TURN", [g.whoseturn])
