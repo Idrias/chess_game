@@ -1,6 +1,7 @@
 Networker net;
 
 void setup() {
+  new Message();
   size(1000, 690); 
   frameRate(144);
   init_vars();
