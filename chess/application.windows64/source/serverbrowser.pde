@@ -16,9 +16,9 @@ class Serverbrowser {
 
   Serverbrowser() {
     background = find_referencedImage("server room");
-    enterID = new Textbox(135, 232, 130, 40, "1234");
+    enterID = new Textbox(135, 232, 130, 40, "");
     enterID.isAlphaAllowed = false;
-    enterName = new Textbox(135, 320, 130, 40, "Magnus");
+    enterName = new Textbox(135, 320, 130, 40, "");
     
     enterServerIP = new Textbox(135, 408, 200, 40, IPPRESET);
     enterServerIP.maxchars = 20;
@@ -111,6 +111,10 @@ class Serverbrowser {
     }
     
     if(enterGame.mouseOver()) {
+      if(enterName.content.equals("")) enterName.correct(2);
+      if(enterID.content.equals("")) enterID.correct(2);
+      if(enterName.content.equals("") || enterID.content.equals(" ")) return; 
+      println("HI");
       int sepindex = enterServerIP.content.indexOf(":");
       String ip = enterServerIP.content.substring(0, sepindex);
       String port = enterServerIP.content.substring(sepindex+1, enterServerIP.content.length());

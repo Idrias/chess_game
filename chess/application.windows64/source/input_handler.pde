@@ -5,7 +5,7 @@ class InputHandler {
     if(mousePressed && !registeredMouseClick) {
       registeredMouseClick = true;
     
-      if(mouseButton == RIGHT) {net.close(); game.state = MENU; return;}
+      if(mouseButton == RIGHT) {if(net!=null) net.close(); game.state = MENU; return;}
       
       switch(game.state) {
         case MENU: menu.checkclick(); break;

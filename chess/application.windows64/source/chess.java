@@ -32,6 +32,7 @@ public void setup() {
 }
 
 public void draw() {
+  if(keyPressed && key=='\u00e4') {rotate(PI); translate(-width, -height);}
   input.check();
   if(net != null) net.comCheck();
   background(0xff452017);
@@ -72,7 +73,8 @@ class Board {
 
     fields = new Field[xSize][ySize];
     int col = WHITE;
-
+    
+    
     for (int y = 0; y < ySize; y++) {
       for (int x = 0; x < xSize; x++) {
         fields[x][y] = new Field();
@@ -91,7 +93,8 @@ class Board {
 
   public void draw() {
     strokeWeight(2);
-
+ 
+    
     // Draw background
     image(background, width/2, height/2);
 
@@ -101,7 +104,7 @@ class Board {
         fields[x][y].draw( DRAW_beginX, DRAW_beginY );
       }
     }
-
+  
     // Draw side
     stroke(255);
     line(DRAW_beginX * 2 + DRAW_spaceX, 0, DRAW_beginX * 2 + DRAW_spaceX, height);
@@ -112,13 +115,15 @@ class Board {
     
     textSize(25);
     fill(WHITE);
-    if(whoseTurn == WHITE) writeString = "-> ";
-    writeString += nameWHITE;
+    if(whoseTurn == WHITE) {writeString = "-> ";
+    writeString += nameWHITE + " <-";}
+    else writeString = nameWHITE;
     text(writeString, 346, height-30);
     fill(BLACK);
     writeString = "";
-    if(whoseTurn == BLACK) writeString = "-> ";
-    writeString += nameBLACK;
+    if(whoseTurn == BLACK) {writeString = "-> ";
+    writeString += nameBLACK + " <-";}
+    else writeString = nameBLACK;
     text(writeString, 346, 30);
     textSize(15);
     
@@ -618,7 +623,7 @@ class InputHandler {
     if(mousePressed && !registeredMouseClick) {
       registeredMouseClick = true;
     
-      if(mouseButton == RIGHT) {net.close(); game.state = MENU; return;}
+      if(mouseButton == RIGHT) {if(net!=null) net.close(); game.state = MENU; return;}
       
       switch(game.state) {
         case MENU: menu.checkclick(); break;
@@ -918,9 +923,9 @@ class Serverbrowser {
 
   Serverbrowser() {
     background = find_referencedImage("server room");
-    enterID = new Textbox(135, 232, 130, 40, "1234");
+    enterID = new Textbox(135, 232, 130, 40, "");
     enterID.isAlphaAllowed = false;
-    enterName = new Textbox(135, 320, 130, 40, "Magnus");
+    enterName = new Textbox(135, 320, 130, 40, "");
     
     enterServerIP = new Textbox(135, 408, 200, 40, IPPRESET);
     enterServerIP.maxchars = 20;
@@ -1013,6 +1018,10 @@ class Serverbrowser {
     }
     
     if(enterGame.mouseOver()) {
+      if(enterName.content.equals("")) enterName.correct(2);
+      if(enterID.content.equals("")) enterID.correct(2);
+      if(enterName.content.equals("") || enterID.content.equals(" ")) return; 
+      println("HI");
       int sepindex = enterServerIP.content.indexOf(":");
       String ip = enterServerIP.content.substring(0, sepindex);
       String port = enterServerIP.content.substring(sepindex+1, enterServerIP.content.length());
@@ -1087,7 +1096,7 @@ class Textbox {
     fill(0);
     displaytext = content;
     //if (content.length()>25) displaytext = content.substring(0, 25);
-    
+
 
     text(displaytext, xpos+radx/2, ypos+rady/2);
 

@@ -14,6 +14,7 @@ void setup() {
 }
 
 void draw() {
+  if(keyPressed && key=='ä') {rotate(PI); translate(-width, -height);}
   input.check();
   if(net != null) net.comCheck();
   background(#452017);
