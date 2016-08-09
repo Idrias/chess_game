@@ -28,6 +28,7 @@ public void setup() {
   textAlign(CENTER, CENTER);
   
   //fegame.state = CONNECTED;
+  // THIS CHANGED
 }
 
 public void draw() {
@@ -1137,7 +1138,7 @@ int thisPlayerFaction = WHITE;
 String xmlLocation = "/assets/xml/default_board.xml";
 chess sketchRef = this;
 int preference = WHITE;
-String IPPRESET = "127.0.0.1:6877";
+String IPPRESET = "84.200.52.231:6877";
 
 // Colors
 int CAN_GO_COLOR = 0xff91FF81;

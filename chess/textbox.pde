@@ -33,7 +33,7 @@ class Textbox {
     fill(0);
     displaytext = content;
     //if (content.length()>25) displaytext = content.substring(0, 25);
-    
+
 
     text(displaytext, xpos+radx/2, ypos+rady/2);
 

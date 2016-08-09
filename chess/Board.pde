@@ -33,7 +33,8 @@ class Board {
 
     fields = new Field[xSize][ySize];
     int col = WHITE;
-
+    
+    
     for (int y = 0; y < ySize; y++) {
       for (int x = 0; x < xSize; x++) {
         fields[x][y] = new Field();
@@ -52,7 +53,8 @@ class Board {
 
   void draw() {
     strokeWeight(2);
-
+ 
+    
     // Draw background
     image(background, width/2, height/2);
 
@@ -62,7 +64,7 @@ class Board {
         fields[x][y].draw( DRAW_beginX, DRAW_beginY );
       }
     }
-
+  
     // Draw side
     stroke(255);
     line(DRAW_beginX * 2 + DRAW_spaceX, 0, DRAW_beginX * 2 + DRAW_spaceX, height);
@@ -73,13 +75,15 @@ class Board {
     
     textSize(25);
     fill(WHITE);
-    if(whoseTurn == WHITE) writeString = "-> ";
-    writeString += nameWHITE;
+    if(whoseTurn == WHITE) {writeString = "-> ";
+    writeString += nameWHITE + " <-";}
+    else writeString = nameWHITE;
     text(writeString, 346, height-30);
     fill(BLACK);
     writeString = "";
-    if(whoseTurn == BLACK) writeString = "-> ";
-    writeString += nameBLACK;
+    if(whoseTurn == BLACK) {writeString = "-> ";
+    writeString += nameBLACK + " <-";}
+    else writeString = nameBLACK;
     text(writeString, 346, 30);
     textSize(15);
     
