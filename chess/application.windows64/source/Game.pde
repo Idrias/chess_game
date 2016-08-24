@@ -7,7 +7,6 @@ class Game {
     board = new Board();
   }
 
-
   void draw() {
     if(state == MENU) menu.draw();
     if(state == CONNECTED) board.draw();

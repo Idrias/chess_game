@@ -1,135 +1,222 @@
 class Serverbrowser {
 
   PImage background;
-  Textbox enterID;
   Textbox enterName;
   Textbox enterServerIP;
-  Textbox enterCreateServerIP;
-  Textbox enterXMLloc;
   Textbox enterXMLname;
-  Button enterGame;
+  Textbox enterPassword;
+  Textbox enterPasswordCreate;
+
+  Button joinGame;
   Button createGame;
+  Button selectFile;
+
+  LightSwitch prefSwitch;
+
+  ModeSelector selJoin;
+  ModeSelector selCreate;
+
   ArrayList<Textbox> textboxes;
   ArrayList<Button> buttons;
-  boolean hasIDBeenReceived = false;
-  int receivedID = 9999;
+  ArrayList<GameLink> glinks;
+
+  String pathToXML;
+  String defaultFile = "default_board.xml";
+
+  int mode = UNDEFINED;  
+  int lastID = -1;
 
   Serverbrowser() {
+    // Find background
     background = find_referencedImage("server room");
-    enterID = new Textbox(135, 232, 130, 40, "");
-    enterID.isAlphaAllowed = false;
-    enterName = new Textbox(135, 320, 130, 40, "");
+    init_ui();
     
-    enterServerIP = new Textbox(135, 408, 200, 40, IPPRESET);
-    enterServerIP.maxchars = 20;
-   
+    
+    glinks = new ArrayList<GameLink>();
+  }
+
+
+
+  void init_ui() {
+    // Find default chess file
     String dp = dataPath("");
-    dp = dp.substring(0, dp.length()-5);
-    enterXMLloc = new Textbox(550, 232, 400, 40, dp+"\\assets\\xml\\");
-    enterXMLloc.maxchars = 250;
-    enterXMLname = new Textbox(550, 320, 400, 40, "default_board.xml");
-    enterXMLname.maxchars = 60;
-    enterCreateServerIP = new Textbox(550, 408, 400, 40, IPPRESET);
-    enterCreateServerIP.maxchars = 20;
-    
-    
-    enterGame = new Button( new PVector(width/2-260, height/2+280), new PVector(335, 39), color(#DDFF1F), "Join Game", true );
-    createGame = new Button( new PVector(width/2+250, height/2+280), new PVector(335, 39), color(#DDFF1F), "Create Game", true );
-     
-     
+    dp = dp.substring(0, dp.length()-5) + "\\assets\\xml"; 
+
+    pathToXML = dp+"\\"+defaultFile;
+
+
+
+    //** BEGIN OF TEXTBOXES
     textboxes = new ArrayList<Textbox>();
-    textboxes.add(enterID);
-    textboxes.add(enterName);
+
+    // Server IP Box
+    enterServerIP = new Textbox(696, 36, 192, 25, IPPRESET);
+    enterServerIP.maxchars = 20;
+    enterServerIP.forMode = ALL;
     textboxes.add(enterServerIP);
-    textboxes.add(enterXMLloc);
-    textboxes.add(enterXMLname); 
-    textboxes.add(enterCreateServerIP);
-    
+
+    // Player name Box
+    enterName = new Textbox(226, 450, 255, 33, "");
+    enterName.maxchars = 20;
+    enterName.forMode = JOIN;
+    textboxes.add(enterName);
+
+    // XML File Box
+    enterXMLname = new Textbox(226, 450, 255, 33, ".../"+defaultFile);
+    enterXMLname.maxchars = 60;
+    enterXMLname.forMode = CREATE;
+    textboxes.add(enterXMLname);
+
+    // Password for client connect
+    enterPassword = new Textbox(226, 559, 255, 33, "");
+    enterPassword.maxchars = 20;
+    enterPassword.isContentSecret = true;
+    enterPassword.forMode = JOIN;
+    textboxes.add(enterPassword);
+
+    // Password for server creation
+    enterPasswordCreate = new Textbox(226, 559, 255, 33, "");
+    enterPasswordCreate.maxchars = 20;
+    enterPasswordCreate.isContentSecret = true;
+    enterPasswordCreate.forMode = CREATE;
+    textboxes.add(enterPasswordCreate);
+    //** END OF TEXTBOXES
+
+
+    //** BEGIN OF BUTTONS
     buttons = new ArrayList<Button>();
-    buttons.add(enterGame);
+
+    // Join Button
+    joinGame = new Button( new PVector(width/2+191, height/2+230), new PVector(257, 40), color(#DDFF1F), color(#EDFF7C), "Join Game", true);
+    joinGame.forMode = JOIN;
+    buttons.add(joinGame);
+
+    // Create Button
+    createGame = new Button( new PVector(width/2+191, height/2+230), new PVector(257, 40), color(#DDFF1F), color(#EDFF7C), "Create Game", true);
+    createGame.forMode = CREATE;
     buttons.add(createGame);
+
+    // File select Button
+    selectFile = new Button( new PVector(423, 504), new PVector(120, 25), color(#DDFF1F), color(#EDFF7C), "Select File", true);
+    selectFile.forMode = CREATE;
+    buttons.add(selectFile);
+    //** END OF BUTTONS
+
+    prefSwitch = new LightSwitch(new PVector(width/2+255, height/2+121), new PVector(width/2-348, height/2+-310), 255, 200, "White", 0, 55, "Black", true);
+
+    selJoin = new ModeSelector(new PVector(435, 360), new PVector(130, 35), color(#DDFF1F), color(#DDFF1F), "Join Game", true);
+    selCreate = new ModeSelector( new PVector(565, 360), new PVector(130, 35), color(#DDFF1F), color(#DDFF1F), "Create Game", false);
+    selJoin.set_partner(selCreate);
+    selCreate.set_partner(selJoin);
   }
-  
-  void takeID(int id) {
-    receivedID = id;
-    hasIDBeenReceived = true;
-    enterID.content = str(id);
-  }
+
+
 
   void draw() {
-    if(enterServerIP.active) enterCreateServerIP.content = enterServerIP.content;
-    if(enterCreateServerIP.active) enterServerIP.content = enterCreateServerIP.content;
-    
+     if(selJoin.state && !selCreate.state) mode = JOIN;
+     else if(selCreate.state && !selJoin.state) mode = CREATE;
+     else mode = UNDEFINED;
+     
+    // Background Image
     image(background, width/2, height/2);
 
-    strokeWeight(5);
-    stroke(#DDFF1F);  // #03FFF0
-    line(width/2, 0, width/2, height);
-    line(0, 150, width, 150);
+    // Game List
+    strokeWeight(2);
+    
+    if(net.active()) {stroke(#0EE830); fill(#0EE830);}
+    else {stroke(#FA5103); fill(#FA5103);}
+    
 
-    fill(#DDFF1F);
-    textSize(50);
-    text("JOIN GAME", width/4, 100);
-    text("CREATE GAME", 3*width/4, 100);
+
+
+    //fill(#0EE830);
     
     textSize(20);
-    text("GAME ID:", 70, 250);
-    text("PLAYER:", 70, 338);
-    text("SERVER IP:", 70, 426);
-    text("XML PATH:", 602, 217);
-    text("XML FILEMAME:", 625, 305);
-    text("SERVER IP:", 602, 393);
+    text("Active Games", 180, 47);
     
-    if(hasIDBeenReceived) {text("GAME HAS BEEN CREATED!", 750, 539); text("ID: " + receivedID, 750, 563);}
-    textSize(12);
+    if(net.active()) text("(Connected)", 318, 47);
+    else text("(Disconnected)", 331, 47);
+
+
+    noFill();
+    rect(112, 62, width-112, 319);
     
-    
-    for(Textbox tb : textboxes) tb.draw();
-    for(Button b : buttons) {
-      if(b.mouseOver()) b.col = color(#EDFF7C);
-      else b.col = color(#DDFF1F);
-      
-      b.draw();
-    
+    for(int i = 0; i < glinks.size() && i < 10; i++) {
+      fill(#DDFF1F);
+      text(glinks.get(i).description, 333, 75+25*i);
     }
     
+    //rect(113, 63, width-113, 318);
+    
+    fill(#DDFF1F);
+    text("Server IP:", 641, 47);
+
+    // Mode JOIN
+    if(mode == JOIN) {
+      text("Player:", 167, 462);
+      text("Preference:", 602, 462);
+      text("Password:", 167, 572);
+      textSize(12);
+      prefSwitch.draw();
+    }
+    
+    // Mode CREATE
+    if(mode == CREATE) {
+    text("XML file:", 167, 462);
+    text("Password:", 167, 572);
+    
+    if(lastID != -1) {
+      textSize(16);
+      text("Game created on server " + net.serverIP + "!", 695, 460);
+      textSize(16);
+      text("(ID: " + lastID+")", 690, 481);
+      textSize(12);
+      }
+    }
+    
+    textSize(12);
+
+    for (Textbox tb : textboxes) if(tb.forMode == mode || tb.forMode == ALL) tb.draw();
+    for (Button b : buttons) if(b.forMode == mode || b.forMode == ALL) b.draw();
+    
+    selJoin.draw();
+    selCreate.draw();
+
     stroke(0); 
     strokeWeight(1);
+
   }
 
-  void checkclick() { 
 
-    for(Textbox tb : textboxes) tb.active = tb.mouseOver()? true : false;
+
+  void checkclick() { 
     
-    if(createGame.mouseOver()) {
-      int sepindex = enterServerIP.content.indexOf(":");
-      String ip = enterServerIP.content.substring(0, sepindex);
-      String port = enterServerIP.content.substring(sepindex+1, enterServerIP.content.length());
-      
-      println(ip, port);
-      net = new Networker(ip, int(port)); println("HEALTHY"); net.createGame(enterXMLloc.content+enterXMLname.content); println("STILL HEALTHY");
+    boolean enterServerIP_state = enterServerIP.active;
+  
+    for (Textbox tb : textboxes) tb.active = tb.mouseOver() && tb.forMode == mode || tb.forMode == ALL && tb.mouseOver() ? true : false;
+    
+    if(enterServerIP_state == true && enterServerIP.active == false) {enterServerIP.active = true; establishGamebrowser();}
+
+
+    if (createGame.mouseOver() && mode == CREATE) {
+      net.createGame(pathToXML, enterPasswordCreate.content);
+    }
+
+    if (joinGame.mouseOver() && mode == JOIN) {
+
     }
     
-    if(enterGame.mouseOver()) {
-      if(enterName.content.equals("")) enterName.correct(2);
-      if(enterID.content.equals("")) enterID.correct(2);
-      if(enterName.content.equals("") || enterID.content.equals(" ")) return; 
-      println("HI");
-      int sepindex = enterServerIP.content.indexOf(":");
-      String ip = enterServerIP.content.substring(0, sepindex);
-      String port = enterServerIP.content.substring(sepindex+1, enterServerIP.content.length());
-      
-      println(ip, port);
-      
-      net = new Networker(ip, int(port));
-      println("HEALTHY");
-      net.joinGame(enterID.content, enterName.content);
+    if (selectFile.mouseOver() && mode == CREATE) {
+      openXMLSelector();
+    }
+
+
+    if (prefSwitch.mouseOver()) {
+      prefSwitch.press();
+      preference = prefSwitch.state ? WHITE : BLACK;
     }
   }
 }
-
-
-
 
 
 
@@ -141,16 +228,18 @@ boolean isnan(float num) {
 
 boolean isNum(char what) {
   switch (what) {
-    case '1':
-    case '2':
-    case '3':
-    case '4':
-    case '5':
-    case '6':
-    case '7':
-    case '8':
-    case '9':
-    case '0': return true;
-    default: return false;
+  case '1':
+  case '2':
+  case '3':
+  case '4':
+  case '5':
+  case '6':
+  case '7':
+  case '8':
+  case '9':
+  case '0': 
+    return true;
+  default: 
+    return false;
   }
 }

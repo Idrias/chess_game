@@ -89,7 +89,7 @@ class Board {
     
     // Draw INFO
     fill(WHITE);
-    text("Game ID: " + browser.enterID.content, 845, 16);
+    text("Game ID: " + "42", 845, 16);
     textSize(12);
     
     // Draw figures

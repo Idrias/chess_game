@@ -3,9 +3,11 @@ class Textbox {
   float xpos, ypos, radx, rady;
   boolean active = false;
   boolean isAlphaAllowed = true;
+  boolean isContentSecret = false;
   int maxchars = 12;
   int correctionstate = 0;
   int correctiontimer = 0;
+  int forMode = -1;
   String displaytext = "";
   
   Textbox(float p_xpos, float p_ypos, float p_radx, float p_rady, String p_content) {
@@ -33,8 +35,16 @@ class Textbox {
     fill(0);
     displaytext = content;
     //if (content.length()>25) displaytext = content.substring(0, 25);
-
-
+    
+    if(isContentSecret) {
+      int len = displaytext.length();
+      displaytext = "";
+      while(len > 0) {
+        displaytext += "*";
+        len--;
+      } 
+    }
+    
     text(displaytext, xpos+radx/2, ypos+rady/2);
 
   }
@@ -50,6 +60,7 @@ class Textbox {
         return true;
       }
     }
+ 
     return false;
   }
 }

@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+
+<board>
+
+<meta>
+	<sizeX>8</sizeX>
+	<sizeY>8</sizeY>
+	<turn>white</turn>
+</meta>
+
+<figures>
+	<!-- White -->
+		<!-- Pawns -->
+			<figure color="white" xloc="a" yloc="2" hasMoved="no">Queen</figure>
+			<figure color="white" xloc="b" yloc="2" hasMoved="no">Queen</figure>
+			<figure color="white" xloc="c" yloc="2" hasMoved="no">Queen</figure>
+			<figure color="white" xloc="d" yloc="2" hasMoved="no">Queen</figure>
+			<figure color="white" xloc="e" yloc="2" hasMoved="no">Queen</figure>
+			<figure color="white" xloc="f" yloc="2" hasMoved="no">Queen</figure>
+			<figure color="white" xloc="g" yloc="2" hasMoved="no">Queen</figure>
+			<figure color="white" xloc="h" yloc="2" hasMoved="no">Queen</figure>
+			
+		<!-- Towers -->
+			<figure color="white" xloc="a" yloc="1" hasMoved="no">Tower</figure>
+			<figure color="white" xloc="h" yloc="1" hasMoved="no">Tower</figure>
+		
+		<!-- Horses -->
+			<figure color="white" xloc="b" yloc="1" hasMoved="no">Horse</figure>
+			<figure color="white" xloc="g" yloc="1" hasMoved="no">Horse</figure>
+		
+		<!-- Bishops -->
+			<figure color="white" xloc="c" yloc="1" hasMoved="no">Bishop</figure>
+			<figure color="white" xloc="f" yloc="1" hasMoved="no">Bishop</figure>
+
+		<!-- Royals -->
+			<figure color="white" xloc="d" yloc="1" hasMoved="no">Queen</figure>
+			<figure color="white" xloc="e" yloc="1" hasMoved="no">King</figure>
+			
+			
+			
+	<!-- Black -->
+		<!-- Pawns -->
+			<figure color="black" xloc="a" yloc="7" hasMoved="no">Queen</figure>
+			<figure color="black" xloc="b" yloc="7" hasMoved="no">Queen</figure>
+			<figure color="black" xloc="c" yloc="7" hasMoved="no">Queen</figure>
+			<figure color="black" xloc="d" yloc="7" hasMoved="no">Queen</figure>
+			<figure color="black" xloc="e" yloc="7" hasMoved="no">Queen</figure>
+			<figure color="black" xloc="f" yloc="7" hasMoved="no">Queen</figure>
+			<figure color="black" xloc="g" yloc="7" hasMoved="no">Queen</figure>
+			<figure color="black" xloc="h" yloc="7" hasMoved="no">Queen</figure>
+			
+		<!-- Towers -->
+			<figure color="black" xloc="a" yloc="8" hasMoved="no">Tower</figure>
+			<figure color="black" xloc="h" yloc="8" hasMoved="no">Tower</figure>
+		
+		<!-- Horses -->
+			<figure color="black" xloc="b" yloc="8" hasMoved="no">Horse</figure>
+			<figure color="black" xloc="g" yloc="8" hasMoved="no">Horse</figure>
+		
+		<!-- Bishops -->
+			<figure color="black" xloc="c" yloc="8" hasMoved="no">Bishop</figure>
+			<figure color="black" xloc="f" yloc="8" hasMoved="no">Bishop</figure>
+
+		<!-- Royals -->
+			<figure color="black" xloc="d" yloc="8" hasMoved="no">Queen</figure>
+			<figure color="black" xloc="e" yloc="8" hasMoved="no">King</figure>
+</figures>
+</board>

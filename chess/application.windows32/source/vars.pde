@@ -22,20 +22,26 @@ final int HOSTILE = 666;
 final int SENDAGAINTHERESHOLD = 0;
 final int ACTIVE = 1;
 final int NOTACTIVE = 2;
+final int JOIN = 0;
+final int CREATE = 1;
+final int ALL = 42;
 /* END OF INTEGERS */
 
-// DEV - HAS TO CHANGE!!!
-int thisPlayerFaction = WHITE;
-String xmlLocation = "/assets/xml/default_board.xml";
-chess sketchRef = this;
-int preference = WHITE;
-String IPPRESET = "84.200.52.231:6877";
 
-// Colors
+chess sketchRef = this;
+
+String IPPRESET = "192.168.178.21:6877";
+// 192.168.178.21:6877
+// 84.200.52.231:6877
+
+int thisPlayerFaction = WHITE;
+int preference = WHITE;
+
 color CAN_GO_COLOR = #91FF81;
 color IN_DANGER_COLOR = #FF4646;
 color SELECTED_COLOR = #FBFF46;
-// End of colors
+
+
 
 /* OBJECTS */
 Game game;
@@ -43,32 +49,26 @@ Menu menu;
 Serverbrowser browser;
 xml_parser parser;
 InputHandler input;
+Networker net;
+
 ArrayList<ReferencedImage> images;
 /* END OF OBJECTS */
 
 
 
 
-
 void init_vars() {
-  parser = new xml_parser();
+  
   images = new ArrayList<ReferencedImage>();
   load_images();
   
+  parser = new xml_parser();
   input = new InputHandler();
-  
+  net = new Networker("0", 0);
   game = new Game();
   menu = new Menu();
   browser = new Serverbrowser();
-
-  try {
-    for (Figure figure : parser.parseFigures(xmlLocation)) {
-      game.board.fields[int(figure.pos.x)][int(figure.pos.y)].figure = figure;
-    }
-  }
-  catch (NullPointerException ThisWasNotATriumphGladOS) {
-    println("Dis is no gud...");
-  }
+  
 }
 
 

@@ -16,27 +16,20 @@ import java.io.IOException;
 
 public class chess extends PApplet {
 
-Networker net;
 
 public void setup() {
-  new Message();
    
   frameRate(144);
   init_vars();
-  
   rectMode(CORNERS);
   imageMode(CENTER);
   textAlign(CENTER, CENTER);
-  
-  //fegame.state = CONNECTED;
-  // TODO IMPLEMENT Escape Menu
 }
 
+
 public void draw() {
-  if(keyPressed && key=='\u00e4') {rotate(PI); translate(-width, -height);}
   input.check();
-  if(net != null) net.comCheck();
-  background(0xff452017);
+  net.comCheck();
   game.draw();
 }
 class Board {
@@ -130,7 +123,7 @@ class Board {
     
     // Draw INFO
     fill(WHITE);
-    text("Game ID: " + browser.enterID.content, 845, 16);
+    text("Game ID: " + "42", 845, 16);
     textSize(12);
     
     // Draw figures
@@ -544,12 +537,23 @@ class Game {
     board = new Board();
   }
 
-
   public void draw() {
     if(state == MENU) menu.draw();
     if(state == CONNECTED) board.draw();
     if(state == SERVERBROWSER) browser.draw();
   }
+
+}
+class GameLink {
+
+  String description;
+  int id;
+  
+  GameLink(String i_description, int i_id) {
+    description = i_description;
+    id = i_id;
+  }
+
 
 }
 class ReferencedImage {
@@ -588,18 +592,24 @@ class Button {
   String text;
   boolean state = false;
   int col;
+  int col2nd;
+  int drawcol;
+  int forMode = -1;
   
-  Button(PVector p_pos, PVector p_size, int p_col, String p_text, boolean p_state) {
+  Button(PVector p_pos, PVector p_size, int p_col, int p_col2nd, String p_text, boolean p_state) {
     pos = p_pos.copy();
     size = p_size.copy();
     text = p_text;
     col = p_col;
+    drawcol = col;
+    col2nd = p_col2nd;
     state = p_state;
   }
   
   public void draw() {
+    mouseOver();
     rectMode(CENTER);
-    fill(col);
+    fill(drawcol);
     rect(pos.x, pos.y, size.x, size.y, 10);
     fill(0);
     text(text, pos.x, pos.y);
@@ -610,52 +620,174 @@ class Button {
   
   public boolean mouseOver() {
     if(mouseX >= pos.x - size.x/2 && mouseX <= pos.x + size.x/2 && mouseY >= pos.y - size.y/2 && mouseY <= pos.y + size.y/2) {
+      drawcol = col2nd;
       return true;
     }
-    else return false;
+    drawcol = col;
+    return false;
   }
 }
 
+public void openXMLSelector() {
+  String dp = dataPath("");
+  dp = dp.substring(0, dp.length()-5);
+  dp += "\\assets\\xml\\default_board.xml";
+  File f = new File(dp);
+  selectInput("Choose XML file you wish to upload to the server.", "selectdone", f);
+}
+
+
+public void selectdone(File selection) {
+  if (selection == null) return; // User aborted
+  
+  String path = selection.getAbsolutePath();
+  browser.pathToXML = path;
+  
+  String filename = path.substring(path.lastIndexOf("\\")+1, path.length());
+  browser.enterXMLname.content = ".../" + filename;
+}
 class InputHandler {
   boolean registeredMouseClick = false;
-  
-  public void check() {
-    if(mousePressed && !registeredMouseClick) {
-      registeredMouseClick = true;
-    
-      
-      switch(game.state) {
-        case MENU: menu.checkclick(); break;
-        case CONNECTED: game.board.checkclick(); break;
-        case SERVERBROWSER: browser.checkclick(); break;
-      }
-      
-    }
-    
-    else if(!mousePressed) registeredMouseClick = false;
-  }
-  
 
+  public void check() {
+    if (mousePressed && !registeredMouseClick) {
+      registeredMouseClick = true;
+
+
+      switch(game.state) {
+      case MENU: 
+        menu.checkclick(); 
+        break;
+      case CONNECTED: 
+        game.board.checkclick(); 
+        break;
+      case SERVERBROWSER: 
+        browser.checkclick(); 
+        break;
+      }
+    } else if (!mousePressed) registeredMouseClick = false;
+  }
 }
 
 
-  public void keyPressed() {
-  if(key == ESC)
-      {print("HI"); if(net!=null) net.close(); game.state = MENU; key='0'; return;}
+public void keyPressed() {
+  if (key == ESC)
+  {
+    if (net!=null) net.close(); 
+    game.state = MENU; 
+    key='0'; 
+    return;
+  }
+
+  if (game.state == SERVERBROWSER) {
+    //if(keyCode == TAB) for(int i = 0; i<browser.textboxes.size(); i++) if(browser.textboxes.get(i).active) {browser.textboxes.get(i).active = false; browser.textboxes.get((i+1)%browser.textboxes.size()).active = true;}
+
+    if (keyCode == ENTER) {
+      establishGamebrowser();
+    }
+
+    if (key==TAB || key==ENTER || key==RETURN || key==ESC || key==DELETE || key==SHIFT || key==ALT || key==CODED) return;
+
+    Textbox target = null;
+    for (Textbox tb : browser.textboxes) if (tb.active) {
+      target = tb;
+    }
+    if (target==null) return;
+
+    if (key==BACKSPACE) {
+      if (target.content.length() > 0)
+        target.content = target.content.substring(0, target.content.length()-1);
+    } else if ((isNum(key) || target.isAlphaAllowed) && target.content.length()+1 <= target.maxchars) target.content += key;
+  }
+}
+
+
+
+
+public void establishGamebrowser() {
+  for (Textbox tb : browser.textboxes) {
+    if (tb.active && tb == browser.enterServerIP) {
+
+      int sepindex = tb.content.indexOf(":");
+      String ip = tb.content.substring(0, sepindex);
+      String port = tb.content.substring(sepindex+1, tb.content.length());
+
+      if (ip!=null && port!=null && !ip.equals("") && !port.equals("")) {
+        browser.glinks = new ArrayList<GameLink>();
+        
+        net = new Networker(ip, PApplet.parseInt(port));
+        net.start();
+        net.addMessage("LIST GAMES", new String[]{});
+        
+        
+      }
+      tb.active = false;
+    }
+  }
+}
+class LightSwitch {
+  PVector pos;
+  PVector size;
+  
+  String textA;
+  String textB;
+  
+  boolean state = false;
+  
+  int colA;
+  int col2ndA;
+  int colB;
+  int col2ndB;
+  
+  int drawcol;
+  
+  
+  LightSwitch(PVector p_pos, PVector p_size, int p_colA, int p_col2ndA, String p_textA, int p_colB, int p_col2ndB, String p_textB, boolean p_state) {
+    
+    // Same for both sides
+    pos = p_pos.copy();
+    size = p_size.copy();
+    
+    textA = p_textA;
+    textB = p_textB;
+    
+    colA = p_colA;
+    col2ndA = p_col2ndA;
+    
+    colB = p_colB;
+    col2ndB = p_col2ndB;
+    
+    state = p_state;
+    
+    drawcol = state ? colA : colB;
+  }
+  
+  
+  public void draw() {
+    mouseOver();
+    rectMode(CENTER);
+    fill(drawcol);
+    rect(pos.x, pos.y, size.x, size.y, 10);
+    fill(state ? colB : colA);
+    text(state ? textA : textB, pos.x, pos.y);
+    rectMode(CORNERS);
+  }
+  
+ 
+  public void press() {
+    state = !state;
+  }
+  
+  public boolean mouseOver() {
+    if(mouseX >= pos.x - size.x/2 && mouseX <= pos.x + size.x/2 && mouseY >= pos.y - size.y/2 && mouseY <= pos.y + size.y/2) {
       
-  if(game.state == SERVERBROWSER) {
-                //if(keyCode == TAB) for(int i = 0; i<browser.textboxes.size(); i++) if(browser.textboxes.get(i).active) {browser.textboxes.get(i).active = false; browser.textboxes.get((i+1)%browser.textboxes.size()).active = true;}
-                if(key==TAB || key==ENTER || key==RETURN || key==ESC || key==DELETE || key==SHIFT || key==ALT || key==CODED) return;
-                
-                Textbox target = null;
-                for(Textbox tb : browser.textboxes) if(tb.active) {target = tb;}
-                if(target==null) return;
-                
-                if (key==BACKSPACE) {
-                  if (target.content.length() > 0)
-                    target.content = target.content.substring(0, target.content.length()-1);
-                } else if ((isNum(key) || target.isAlphaAllowed) && target.content.length()+1 <= target.maxchars) target.content += key;
-              }
+      drawcol = state ? col2ndA : col2ndB;
+      return true;
+    }
+    
+    drawcol = state? colA : colB;
+    return false;
+  }
 }
 class Menu {
   PImage background = find_referencedImage("study room");
@@ -663,18 +795,14 @@ class Menu {
   Button options;
   
   Menu() {
-    play = new Button( new PVector(width/2, height/2-20), new PVector(200, 50), color(0xffFCB80A), "PLAY", true);
-    options = new Button( new PVector(width/2, height/2+55), new PVector(200, 50), color(0xffFCB80A), "OPTIONS", true);
+    play = new Button( new PVector(width/2, height/2-20), new PVector(200, 50), color(0xffFCB80A), color(0xffFAFF0F), "PLAY", true);
+    options = new Button( new PVector(width/2, height/2+55), new PVector(200, 50), color(0xffFCB80A), color(0xffFAFF0F), "OPTIONS", true);
   }
   
   public void draw() {
     image(background, width/2, height/2);
     strokeWeight(1);
     
-    if(play.mouseOver()) play.col = color(0xffFAFF0F); else play.col = color(0xffFCB80A);
-    if(options.mouseOver()) options.col = color(0xffFAFF0F); else options.col = color(0xffFCB80A);
-    
-
     play.draw();
     options.draw();
     
@@ -685,6 +813,59 @@ class Menu {
     if(play.mouseOver()) {browser = new Serverbrowser(); game.state = SERVERBROWSER;}
     if(options.mouseOver()) game.state = OPTIONS;
   }
+}
+class ModeSelector {
+  
+  PVector pos;
+  PVector size;
+  String text;
+  boolean state = false;
+  int col;
+  int col2nd;
+  int drawcol;
+  ModeSelector partner;
+  
+  ModeSelector(PVector p_pos, PVector p_size, int p_col, int p_col2nd, String p_text, boolean p_state) {
+    pos = p_pos.copy();
+    size = p_size.copy();
+    text = p_text;
+    col = p_col;
+    drawcol = col;
+    col2nd = p_col2nd;
+    state = p_state;
+  }
+  
+  
+  public void set_partner(ModeSelector p_partner) {
+    partner = p_partner;
+  }
+  
+  public void draw() {
+    mouseOver();
+    rectMode(CENTER);
+    fill(drawcol);
+    
+    if(!state) fill(0xffC9C9C9); 
+    
+    rect(pos.x, pos.y, size.x, size.y, 10);
+    fill(0);
+    text(text, pos.x, pos.y);
+    rectMode(CORNERS);
+  }
+  
+ 
+  
+  public boolean mouseOver() {
+    if(mouseX >= pos.x - size.x/2 && mouseX <= pos.x + size.x/2 && mouseY >= pos.y - size.y/2 && mouseY <= pos.y + size.y/2) {
+      drawcol = col2nd;
+      partner.state = false;
+      state = true;
+      return true;
+    }
+    drawcol = col;
+    return false;
+  }
+  
 }
 
 
@@ -699,33 +880,46 @@ class Networker {
   Networker(String i_serverIP, int i_serverPORT) {
     serverIP = i_serverIP;
     serverPORT = i_serverPORT;
-    client = new Client(sketchRef, serverIP, serverPORT);
     outMSGS = new ArrayList<outMessage>();
   }
 
+  public void start() {
+    client = new Client(sketchRef, serverIP, serverPORT);
+  }
+    
+
+
   public void close() {
-    if(client.active()) 
+    if (client.active()) 
       client.stop();
   }
-  
-  
+
+
   public void comCheck() {
-    if(client.active()) {lastState = ACTIVE;}
-    if(!client.active() && lastState == ACTIVE) {lastState = NOTACTIVE; game.state = MENU;}
-    if(!client.active()) return;
+    if(client == null) return;
     
+    if (client.active()) {
+      lastState = ACTIVE;
+    }
+    
+    if (!client.active() && lastState == ACTIVE) {
+      lastState = NOTACTIVE; 
+      game.state = SERVERBROWSER;
+    }
+    if (!client.active()) return;
+
     inCheck();
     outCheck();
   }
 
   public void addMessage(String command, String[] args) {
     String message = "$" + command + ";";
-    
-    for(int i=0; i < args.length; i++) {
+
+    for (int i=0; i < args.length; i++) {
       message  += args[i] + ";";
     }
     message += "&";
-    
+
     //println(message);
     outMSGS.add(new outMessage(message));
   }
@@ -736,83 +930,96 @@ class Networker {
     int lastSemi = message.indexOf(";");
     int nextSemi = message.indexOf(";", lastSemi+1);
     ArrayList<String> arguments = new ArrayList<String>();
-    
-    while(nextSemi != -1) {
+
+    while (nextSemi != -1) {
       arguments.add( message.substring(lastSemi+1, nextSemi) ); 
       lastSemi = nextSemi;
       nextSemi = message.indexOf(";", lastSemi+1);
     }
-    
+
     //println("COMMAND: " + command);
     //for(String arg : arguments) println("ARG: " + arg);
-    
-    
+
+
     //////////////////////////////
     // COMMAND EXECUTION
     //////////////////////////////
-    
-    if(command.equals("THX")) {
+
+    if (command.equals("THX")) {
       String hash = arguments.get(0);
-      for(outMessage msg : outMSGS) {
-        if(PApplet.parseInt(hash) == msg.specialHash) {
+      for (outMessage msg : outMSGS) {
+        if (PApplet.parseInt(hash) == msg.specialHash) {
           msg.hasBeenReceived = true;
-          print("HAPPY HASH", hash);}
-        else
+          print("HAPPY HASH", hash);
+        } else
           print(hash, "is not the needed hash", msg.specialHash);
       }
     }
-    
-    
-    if(command.equals("CODE IS")) {
-      browser.takeID(PApplet.parseInt(arguments.get(0)));
-   }
- 
-    if(command.equals("YOU ARE")) {
+
+
+
+    if (command.equals("YOU ARE")) {
       // WE GOT ACCEPTED!
-      if(PApplet.parseInt(arguments.get(0))==WHITE) thisPlayerFaction = WHITE;
-      else if(PApplet.parseInt(arguments.get(0))==BLACK) thisPlayerFaction = BLACK;
-      
+      if (PApplet.parseInt(arguments.get(0))==WHITE) thisPlayerFaction = WHITE;
+      else if (PApplet.parseInt(arguments.get(0))==BLACK) thisPlayerFaction = BLACK;
+
       game.board = new Board();
       game.state = CONNECTED;
     }
-    
-    if(command.equals("ADD FIGURE")) {
+
+    if (command.equals("ADD FIGURE")) {
       Figure f = new Figure(PApplet.parseInt(arguments.get(0)), PApplet.parseInt(arguments.get(1)), new PVector(PApplet.parseInt(arguments.get(2)), PApplet.parseInt(arguments.get(3))));
-      
+
       println(arguments.get(4));
-      if(arguments.get(4).equals("True")) f.hasMoved = true;
+      if (arguments.get(4).equals("True")) f.hasMoved = true;
       game.board.fields[PApplet.parseInt(f.pos.x)][PApplet.parseInt(f.pos.y)].figure = f;
-  }
-  
-    if(command.equals("REMOVE FIGURE")) {
+    }
+
+    if (command.equals("REMOVE FIGURE")) {
       game.board.fields[PApplet.parseInt(arguments.get(0))][PApplet.parseInt(arguments.get(1))].figure = null;
     }
-  
-    if(command.equals("TURN")) {
+
+    if (command.equals("TURN")) {
       game.board.whoseTurn = PApplet.parseInt(arguments.get(0));
     }
-  
     
-    if(command.equals("UI UPDATE")) {
-      if(arguments.get(0).equals("NAME")) {
-        if(PApplet.parseInt(arguments.get(1)) == WHITE) {
+    if (command.equals("CODE IS")) {
+      browser.lastID = PApplet.parseInt(arguments.get(0));
+    }
+    
+    if (command.equals("GAME")) {
+      int linkID = PApplet.parseInt(arguments.get(0));
+      
+      for(int i = 0; i < browser.glinks.size(); i++) {
+        GameLink q = browser.glinks.get(i);
+        if(q.id == linkID) browser.glinks.remove(i);
+      }
+      
+      String linkString = "Game No. " + arguments.get(0) + ", ";
+             linkString += "WHITE: " + arguments.get(1) + ", ";
+             linkString += "BLACK: " + arguments.get(2);
+      
+      browser.glinks.add( new GameLink(linkString, linkID)  );
+    }
+
+
+    if (command.equals("UI UPDATE")) {
+      if (arguments.get(0).equals("NAME")) {
+        if (PApplet.parseInt(arguments.get(1)) == WHITE) {
           game.board.nameWHITE = arguments.get(2);
-        }
-        
-        else if(PApplet.parseInt(arguments.get(1)) == BLACK) {
+        } else if (PApplet.parseInt(arguments.get(1)) == BLACK) {
           game.board.nameBLACK = arguments.get(2);
         }
       }
     }
-    
- }
+  }
 
 
 
   public void inCheck() {
     String incoming = client.readString();
-    if(incoming == null) return;
-    
+    if (incoming == null) return;
+
     ArrayList<String> inMSGS = new ArrayList<String>();
     String formingMSG = appendix;
 
@@ -822,7 +1029,6 @@ class Networker {
         formingMSG = "";
       } else if (incoming.charAt(i) == '&') {
         inMSGS.add(formingMSG);
-        
       } else {
         formingMSG += incoming.charAt(i);
       }
@@ -850,7 +1056,9 @@ class Networker {
   }
 
 
-  public void createGame(String gameFile) {
+  public void createGame(String gameFile, String pwd) {
+    if(!active()) return;
+    
     println("CREATING GAME WITH " + gameFile);
     String[] lines = loadStrings(gameFile);
 
@@ -860,7 +1068,7 @@ class Networker {
      [message] = command;argument1;argument2;argument3;...;argumentN
      */
 
-    String writeString = "$CREATE GAME;";
+    String writeString = "$CREATE GAME;"+pwd+";";
 
     for (int i=0; i < lines.length; i++) 
       writeString += lines[i] + ";";
@@ -870,20 +1078,20 @@ class Networker {
   }
 
 
-  
+
   public void joinGame(String id, String name) {
+    if(!active()) return;
     addMessage("JOIN GAME", new String[]{id, str(preference), name});
   }
-  
-  
+
+
 
   public boolean active() {
+    if(client == null) return false;
+    
     if (client.active()) {
-      println(client, "is connected to", serverIP+":"+serverPORT);
       return true;
     }
-
-    println(client, "is NOT ANYMORE connected to", serverIP+":"+serverPORT);
     return false;
   }
 }
@@ -910,135 +1118,222 @@ class outMessage {
 class Serverbrowser {
 
   PImage background;
-  Textbox enterID;
   Textbox enterName;
   Textbox enterServerIP;
-  Textbox enterCreateServerIP;
-  Textbox enterXMLloc;
   Textbox enterXMLname;
-  Button enterGame;
+  Textbox enterPassword;
+  Textbox enterPasswordCreate;
+
+  Button joinGame;
   Button createGame;
+  Button selectFile;
+
+  LightSwitch prefSwitch;
+
+  ModeSelector selJoin;
+  ModeSelector selCreate;
+
   ArrayList<Textbox> textboxes;
   ArrayList<Button> buttons;
-  boolean hasIDBeenReceived = false;
-  int receivedID = 9999;
+  ArrayList<GameLink> glinks;
+
+  String pathToXML;
+  String defaultFile = "default_board.xml";
+
+  int mode = UNDEFINED;  
+  int lastID = -1;
 
   Serverbrowser() {
+    // Find background
     background = find_referencedImage("server room");
-    enterID = new Textbox(135, 232, 130, 40, "");
-    enterID.isAlphaAllowed = false;
-    enterName = new Textbox(135, 320, 130, 40, "");
+    init_ui();
     
-    enterServerIP = new Textbox(135, 408, 200, 40, IPPRESET);
-    enterServerIP.maxchars = 20;
-   
+    
+    glinks = new ArrayList<GameLink>();
+  }
+
+
+
+  public void init_ui() {
+    // Find default chess file
     String dp = dataPath("");
-    dp = dp.substring(0, dp.length()-5);
-    enterXMLloc = new Textbox(550, 232, 400, 40, dp+"\\assets\\xml\\");
-    enterXMLloc.maxchars = 250;
-    enterXMLname = new Textbox(550, 320, 400, 40, "default_board.xml");
-    enterXMLname.maxchars = 60;
-    enterCreateServerIP = new Textbox(550, 408, 400, 40, IPPRESET);
-    enterCreateServerIP.maxchars = 20;
-    
-    
-    enterGame = new Button( new PVector(width/2-260, height/2+280), new PVector(335, 39), color(0xffDDFF1F), "Join Game", true );
-    createGame = new Button( new PVector(width/2+250, height/2+280), new PVector(335, 39), color(0xffDDFF1F), "Create Game", true );
-     
-     
+    dp = dp.substring(0, dp.length()-5) + "\\assets\\xml"; 
+
+    pathToXML = dp+"\\"+defaultFile;
+
+
+
+    //** BEGIN OF TEXTBOXES
     textboxes = new ArrayList<Textbox>();
-    textboxes.add(enterID);
-    textboxes.add(enterName);
+
+    // Server IP Box
+    enterServerIP = new Textbox(696, 36, 192, 25, IPPRESET);
+    enterServerIP.maxchars = 20;
+    enterServerIP.forMode = ALL;
     textboxes.add(enterServerIP);
-    textboxes.add(enterXMLloc);
-    textboxes.add(enterXMLname); 
-    textboxes.add(enterCreateServerIP);
-    
+
+    // Player name Box
+    enterName = new Textbox(226, 450, 255, 33, "");
+    enterName.maxchars = 20;
+    enterName.forMode = JOIN;
+    textboxes.add(enterName);
+
+    // XML File Box
+    enterXMLname = new Textbox(226, 450, 255, 33, ".../"+defaultFile);
+    enterXMLname.maxchars = 60;
+    enterXMLname.forMode = CREATE;
+    textboxes.add(enterXMLname);
+
+    // Password for client connect
+    enterPassword = new Textbox(226, 559, 255, 33, "");
+    enterPassword.maxchars = 20;
+    enterPassword.isContentSecret = true;
+    enterPassword.forMode = JOIN;
+    textboxes.add(enterPassword);
+
+    // Password for server creation
+    enterPasswordCreate = new Textbox(226, 559, 255, 33, "");
+    enterPasswordCreate.maxchars = 20;
+    enterPasswordCreate.isContentSecret = true;
+    enterPasswordCreate.forMode = CREATE;
+    textboxes.add(enterPasswordCreate);
+    //** END OF TEXTBOXES
+
+
+    //** BEGIN OF BUTTONS
     buttons = new ArrayList<Button>();
-    buttons.add(enterGame);
+
+    // Join Button
+    joinGame = new Button( new PVector(width/2+191, height/2+230), new PVector(257, 40), color(0xffDDFF1F), color(0xffEDFF7C), "Join Game", true);
+    joinGame.forMode = JOIN;
+    buttons.add(joinGame);
+
+    // Create Button
+    createGame = new Button( new PVector(width/2+191, height/2+230), new PVector(257, 40), color(0xffDDFF1F), color(0xffEDFF7C), "Create Game", true);
+    createGame.forMode = CREATE;
     buttons.add(createGame);
+
+    // File select Button
+    selectFile = new Button( new PVector(423, 504), new PVector(120, 25), color(0xffDDFF1F), color(0xffEDFF7C), "Select File", true);
+    selectFile.forMode = CREATE;
+    buttons.add(selectFile);
+    //** END OF BUTTONS
+
+    prefSwitch = new LightSwitch(new PVector(width/2+255, height/2+121), new PVector(width/2-348, height/2+-310), 255, 200, "White", 0, 55, "Black", true);
+
+    selJoin = new ModeSelector(new PVector(435, 360), new PVector(130, 35), color(0xffDDFF1F), color(0xffDDFF1F), "Join Game", true);
+    selCreate = new ModeSelector( new PVector(565, 360), new PVector(130, 35), color(0xffDDFF1F), color(0xffDDFF1F), "Create Game", false);
+    selJoin.set_partner(selCreate);
+    selCreate.set_partner(selJoin);
   }
-  
-  public void takeID(int id) {
-    receivedID = id;
-    hasIDBeenReceived = true;
-    enterID.content = str(id);
-  }
+
+
 
   public void draw() {
-    if(enterServerIP.active) enterCreateServerIP.content = enterServerIP.content;
-    if(enterCreateServerIP.active) enterServerIP.content = enterCreateServerIP.content;
-    
+     if(selJoin.state && !selCreate.state) mode = JOIN;
+     else if(selCreate.state && !selJoin.state) mode = CREATE;
+     else mode = UNDEFINED;
+     
+    // Background Image
     image(background, width/2, height/2);
 
-    strokeWeight(5);
-    stroke(0xffDDFF1F);  // #03FFF0
-    line(width/2, 0, width/2, height);
-    line(0, 150, width, 150);
+    // Game List
+    strokeWeight(2);
+    
+    if(net.active()) {stroke(0xff0EE830); fill(0xff0EE830);}
+    else {stroke(0xffFA5103); fill(0xffFA5103);}
+    
 
-    fill(0xffDDFF1F);
-    textSize(50);
-    text("JOIN GAME", width/4, 100);
-    text("CREATE GAME", 3*width/4, 100);
+
+
+    //fill(#0EE830);
     
     textSize(20);
-    text("GAME ID:", 70, 250);
-    text("PLAYER:", 70, 338);
-    text("SERVER IP:", 70, 426);
-    text("XML PATH:", 602, 217);
-    text("XML FILEMAME:", 625, 305);
-    text("SERVER IP:", 602, 393);
+    text("Active Games", 180, 47);
     
-    if(hasIDBeenReceived) {text("GAME HAS BEEN CREATED!", 750, 539); text("ID: " + receivedID, 750, 563);}
-    textSize(12);
+    if(net.active()) text("(Connected)", 318, 47);
+    else text("(Disconnected)", 331, 47);
+
+
+    noFill();
+    rect(112, 62, width-112, 319);
     
-    
-    for(Textbox tb : textboxes) tb.draw();
-    for(Button b : buttons) {
-      if(b.mouseOver()) b.col = color(0xffEDFF7C);
-      else b.col = color(0xffDDFF1F);
-      
-      b.draw();
-    
+    for(int i = 0; i < glinks.size() && i < 10; i++) {
+      fill(0xffDDFF1F);
+      text(glinks.get(i).description, 333, 75+25*i);
     }
     
+    //rect(113, 63, width-113, 318);
+    
+    fill(0xffDDFF1F);
+    text("Server IP:", 641, 47);
+
+    // Mode JOIN
+    if(mode == JOIN) {
+      text("Player:", 167, 462);
+      text("Preference:", 602, 462);
+      text("Password:", 167, 572);
+      textSize(12);
+      prefSwitch.draw();
+    }
+    
+    // Mode CREATE
+    if(mode == CREATE) {
+    text("XML file:", 167, 462);
+    text("Password:", 167, 572);
+    
+    if(lastID != -1) {
+      textSize(16);
+      text("Game created on server " + net.serverIP + "!", 695, 460);
+      textSize(16);
+      text("(ID: " + lastID+")", 690, 481);
+      textSize(12);
+      }
+    }
+    
+    textSize(12);
+
+    for (Textbox tb : textboxes) if(tb.forMode == mode || tb.forMode == ALL) tb.draw();
+    for (Button b : buttons) if(b.forMode == mode || b.forMode == ALL) b.draw();
+    
+    selJoin.draw();
+    selCreate.draw();
+
     stroke(0); 
     strokeWeight(1);
+
   }
 
-  public void checkclick() { 
 
-    for(Textbox tb : textboxes) tb.active = tb.mouseOver()? true : false;
+
+  public void checkclick() { 
     
-    if(createGame.mouseOver()) {
-      int sepindex = enterServerIP.content.indexOf(":");
-      String ip = enterServerIP.content.substring(0, sepindex);
-      String port = enterServerIP.content.substring(sepindex+1, enterServerIP.content.length());
-      
-      println(ip, port);
-      net = new Networker(ip, PApplet.parseInt(port)); println("HEALTHY"); net.createGame(enterXMLloc.content+enterXMLname.content); println("STILL HEALTHY");
+    boolean enterServerIP_state = enterServerIP.active;
+  
+    for (Textbox tb : textboxes) tb.active = tb.mouseOver() && tb.forMode == mode || tb.forMode == ALL && tb.mouseOver() ? true : false;
+    
+    if(enterServerIP_state == true && enterServerIP.active == false) {enterServerIP.active = true; establishGamebrowser();}
+
+
+    if (createGame.mouseOver() && mode == CREATE) {
+      net.createGame(pathToXML, enterPasswordCreate.content);
+    }
+
+    if (joinGame.mouseOver() && mode == JOIN) {
+
     }
     
-    if(enterGame.mouseOver()) {
-      if(enterName.content.equals("")) enterName.correct(2);
-      if(enterID.content.equals("")) enterID.correct(2);
-      if(enterName.content.equals("") || enterID.content.equals(" ")) return; 
-      println("HI");
-      int sepindex = enterServerIP.content.indexOf(":");
-      String ip = enterServerIP.content.substring(0, sepindex);
-      String port = enterServerIP.content.substring(sepindex+1, enterServerIP.content.length());
-      
-      println(ip, port);
-      
-      net = new Networker(ip, PApplet.parseInt(port));
-      println("HEALTHY");
-      net.joinGame(enterID.content, enterName.content);
+    if (selectFile.mouseOver() && mode == CREATE) {
+      openXMLSelector();
+    }
+
+
+    if (prefSwitch.mouseOver()) {
+      prefSwitch.press();
+      preference = prefSwitch.state ? WHITE : BLACK;
     }
   }
 }
-
-
-
 
 
 
@@ -1050,17 +1345,19 @@ public boolean isnan(float num) {
 
 public boolean isNum(char what) {
   switch (what) {
-    case '1':
-    case '2':
-    case '3':
-    case '4':
-    case '5':
-    case '6':
-    case '7':
-    case '8':
-    case '9':
-    case '0': return true;
-    default: return false;
+  case '1':
+  case '2':
+  case '3':
+  case '4':
+  case '5':
+  case '6':
+  case '7':
+  case '8':
+  case '9':
+  case '0': 
+    return true;
+  default: 
+    return false;
   }
 }
 class Textbox {
@@ -1068,9 +1365,11 @@ class Textbox {
   float xpos, ypos, radx, rady;
   boolean active = false;
   boolean isAlphaAllowed = true;
+  boolean isContentSecret = false;
   int maxchars = 12;
   int correctionstate = 0;
   int correctiontimer = 0;
+  int forMode = -1;
   String displaytext = "";
   
   Textbox(float p_xpos, float p_ypos, float p_radx, float p_rady, String p_content) {
@@ -1098,8 +1397,16 @@ class Textbox {
     fill(0);
     displaytext = content;
     //if (content.length()>25) displaytext = content.substring(0, 25);
-
-
+    
+    if(isContentSecret) {
+      int len = displaytext.length();
+      displaytext = "";
+      while(len > 0) {
+        displaytext += "*";
+        len--;
+      } 
+    }
+    
     text(displaytext, xpos+radx/2, ypos+rady/2);
 
   }
@@ -1115,6 +1422,7 @@ class Textbox {
         return true;
       }
     }
+ 
     return false;
   }
 }
@@ -1142,20 +1450,26 @@ final int HOSTILE = 666;
 final int SENDAGAINTHERESHOLD = 0;
 final int ACTIVE = 1;
 final int NOTACTIVE = 2;
+final int JOIN = 0;
+final int CREATE = 1;
+final int ALL = 42;
 /* END OF INTEGERS */
 
-// DEV - HAS TO CHANGE!!!
-int thisPlayerFaction = WHITE;
-String xmlLocation = "/assets/xml/default_board.xml";
-chess sketchRef = this;
-int preference = WHITE;
-String IPPRESET = "84.200.52.231:6877";
 
-// Colors
+chess sketchRef = this;
+
+String IPPRESET = "192.168.178.21:6877";
+// 192.168.178.21:6877
+// 84.200.52.231:6877
+
+int thisPlayerFaction = WHITE;
+int preference = WHITE;
+
 int CAN_GO_COLOR = 0xff91FF81;
 int IN_DANGER_COLOR = 0xffFF4646;
 int SELECTED_COLOR = 0xffFBFF46;
-// End of colors
+
+
 
 /* OBJECTS */
 Game game;
@@ -1163,32 +1477,26 @@ Menu menu;
 Serverbrowser browser;
 xml_parser parser;
 InputHandler input;
+Networker net;
+
 ArrayList<ReferencedImage> images;
 /* END OF OBJECTS */
 
 
 
 
-
 public void init_vars() {
-  parser = new xml_parser();
+  
   images = new ArrayList<ReferencedImage>();
   load_images();
   
+  parser = new xml_parser();
   input = new InputHandler();
-  
+  net = new Networker("0", 0);
   game = new Game();
   menu = new Menu();
   browser = new Serverbrowser();
-
-  try {
-    for (Figure figure : parser.parseFigures(xmlLocation)) {
-      game.board.fields[PApplet.parseInt(figure.pos.x)][PApplet.parseInt(figure.pos.y)].figure = figure;
-    }
-  }
-  catch (NullPointerException ThisWasNotATriumphGladOS) {
-    println("Dis is no gud...");
-  }
+  
 }
 
 

@@ -6,7 +6,8 @@ def rmdir(path):
     try:
         shutil.rmtree(path)
     except FileNotFoundError:
-        print("[SYSTEM / CRITICAL]: Could not find folder to rmdir in: " + path)
+        pass
+        #print("[SYSTEM / CRITICAL]: Could not find folder to rmdir in: " + path)
 
 
 def mkdir(path):

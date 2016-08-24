@@ -1,4 +1,5 @@
-class Button {
+class ModeSelector {
+  
   PVector pos;
   PVector size;
   String text;
@@ -6,9 +7,9 @@ class Button {
   color col;
   color col2nd;
   color drawcol;
-  int forMode = -1;
+  ModeSelector partner;
   
-  Button(PVector p_pos, PVector p_size, color p_col, color p_col2nd, String p_text, boolean p_state) {
+  ModeSelector(PVector p_pos, PVector p_size, color p_col, color p_col2nd, String p_text, boolean p_state) {
     pos = p_pos.copy();
     size = p_size.copy();
     text = p_text;
@@ -18,10 +19,18 @@ class Button {
     state = p_state;
   }
   
+  
+  void set_partner(ModeSelector p_partner) {
+    partner = p_partner;
+  }
+  
   void draw() {
     mouseOver();
     rectMode(CENTER);
     fill(drawcol);
+    
+    if(!state) fill(#C9C9C9); 
+    
     rect(pos.x, pos.y, size.x, size.y, 10);
     fill(0);
     text(text, pos.x, pos.y);
@@ -33,9 +42,12 @@ class Button {
   boolean mouseOver() {
     if(mouseX >= pos.x - size.x/2 && mouseX <= pos.x + size.x/2 && mouseY >= pos.y - size.y/2 && mouseY <= pos.y + size.y/2) {
       drawcol = col2nd;
+      partner.state = false;
+      state = true;
       return true;
     }
     drawcol = col;
     return false;
   }
+  
 }

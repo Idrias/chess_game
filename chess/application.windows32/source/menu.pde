@@ -4,18 +4,14 @@ class Menu {
   Button options;
   
   Menu() {
-    play = new Button( new PVector(width/2, height/2-20), new PVector(200, 50), color(#FCB80A), "PLAY", true);
-    options = new Button( new PVector(width/2, height/2+55), new PVector(200, 50), color(#FCB80A), "OPTIONS", true);
+    play = new Button( new PVector(width/2, height/2-20), new PVector(200, 50), color(#FCB80A), color(#FAFF0F), "PLAY", true);
+    options = new Button( new PVector(width/2, height/2+55), new PVector(200, 50), color(#FCB80A), color(#FAFF0F), "OPTIONS", true);
   }
   
   void draw() {
     image(background, width/2, height/2);
     strokeWeight(1);
     
-    if(play.mouseOver()) play.col = color(#FAFF0F); else play.col = color(#FCB80A);
-    if(options.mouseOver()) options.col = color(#FAFF0F); else options.col = color(#FCB80A);
-    
-
     play.draw();
     options.draw();
     

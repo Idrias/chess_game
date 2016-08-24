@@ -123,10 +123,10 @@ def rcv():
                 print("Already done.")
 
         if mail == b'':
+            print("Client", c.addr, "disconnected! (Oh no...)")
             dcFromGame(c)
             c.comsock.close()
             ncs.remove(c)
-            print("Oh no...")
             return
 
         else:
@@ -159,4 +159,9 @@ def dcFromGame(c):
 def sendToAll(gameID, command, args):
     for nc in ncs:
         if nc.linkedID == gameID:
+            nc.sendmessage(command, args)
+
+
+def sendToAllAll(command, args):
+    for nc in ncs:
             nc.sendmessage(command, args)

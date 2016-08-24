@@ -14,6 +14,8 @@ class Game:
         self.playerBLACK = None
         self.whoseturn = WHITE #TODO
         self.xmlPath = ""
+        self.password = ""
+
 
     def genID(self):
         flag = False
