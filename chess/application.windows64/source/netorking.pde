@@ -21,7 +21,7 @@ class Networker {
 
 
   void close() {
-    if (client.active()) 
+    if (client !=  null && client.active()) 
       client.stop();
   }
 
@@ -210,9 +210,9 @@ class Networker {
 
 
 
-  void joinGame(String id, String name) {
+  void joinGame(String id, String name, String password) {
     if(!active()) return;
-    addMessage("JOIN GAME", new String[]{id, str(preference), name});
+    addMessage("JOIN GAME", new String[]{id, str(preference), name, password});
   }
 
 

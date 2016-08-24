@@ -130,4 +130,6 @@ def list_games(m):
     c = net.getClientByAddr(m.sender)
 
     for g in glist:
-        c.sendmessage("GAME", [g.id, g.playerWHITE, g.playerBLACK])
+        whiteName = "None" if g.playerWHITE is None else g.playerWHITE.name
+        blackName = "None" if g.playerBLACK is None else g.playerBLACK.name
+        c.sendmessage("GAME", [g.id, whiteName, blackName])

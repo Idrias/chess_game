@@ -25,6 +25,8 @@ class Serverbrowser {
 
   int mode = UNDEFINED;  
   int lastID = -1;
+  
+  int startOfScope = 0;
 
   Serverbrowser() {
     // Find background
@@ -122,6 +124,22 @@ class Serverbrowser {
 
     // Game List
     strokeWeight(2);
+
+    fill(#DDFF1F);
+    
+   if(startOfScope < 0) startOfScope = 0;
+   else if(startOfScope > glinks.size()) startOfScope = glinks.size();
+   
+   textSize(50);
+   if(startOfScope > 0) text("...", width/2, 60);
+   if(startOfScope + 8 < glinks.size()) text("...", width/2, (75+25*(8+1)-15));
+   textSize(18);
+   
+   
+   for(int i = startOfScope; i < glinks.size() && i < startOfScope+8; i++) {
+      glinks.get(i).get_physical(width/2, 75+25*(i-startOfScope+1)+2);
+      glinks.get(i).draw();
+    }
     
     if(net.active()) {stroke(#0EE830); fill(#0EE830);}
     else {stroke(#FA5103); fill(#FA5103);}
@@ -141,10 +159,7 @@ class Serverbrowser {
     noFill();
     rect(112, 62, width-112, 319);
     
-    for(int i = 0; i < glinks.size() && i < 10; i++) {
-      fill(#DDFF1F);
-      text(glinks.get(i).description, 333, 75+25*i);
-    }
+
     
     //rect(113, 63, width-113, 318);
     
@@ -198,12 +213,27 @@ class Serverbrowser {
     if(enterServerIP_state == true && enterServerIP.active == false) {enterServerIP.active = true; establishGamebrowser();}
 
 
+    for(GameLink g : glinks) {
+      if(g.checkclick()) {
+        g.selected = !g.selected;
+        for(int i=0; i<glinks.size(); i++) if(glinks.get(i) != g) glinks.get(i).selected = false; 
+      }
+    }
+
+
+
     if (createGame.mouseOver() && mode == CREATE) {
       net.createGame(pathToXML, enterPasswordCreate.content);
     }
 
     if (joinGame.mouseOver() && mode == JOIN) {
-
+      GameLink g = null;
+      for(GameLink q : glinks) if(q.selected) g = q; 
+      if(g == null) return;
+      
+      net.joinGame( str(g.id), enterName.content, enterPassword.content );
+      
+      // ID NAME PASSWORT
     }
     
     if (selectFile.mouseOver() && mode == CREATE) {

@@ -22,6 +22,14 @@ class InputHandler {
 }
 
 
+
+void mouseWheel(MouseEvent e) {
+  if(game.state == SERVERBROWSER) browser.startOfScope += e.getCount();
+
+}
+
+
+
 void keyPressed() {
   if (key == ESC)
   {

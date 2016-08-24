@@ -2,21 +2,30 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3e5a494d-7850-4abc-9ed1-8c4d3713e922" name="Default" comment="Alpha 1.0.2">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../chess/Message.java" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows32/chess.exe" afterPath="$PROJECT_DIR$/../chess/application.windows32/chess.exe" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows32/lib/chess.jar" afterPath="$PROJECT_DIR$/../chess/application.windows32/lib/chess.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows64/chess.exe" afterPath="$PROJECT_DIR$/../chess/application.windows64/chess.exe" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows64/lib/chess.jar" afterPath="$PROJECT_DIR$/../chess/application.windows64/lib/chess.jar" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/command_interpreter.py" afterPath="$PROJECT_DIR$/command_interpreter.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/file_operations.py" afterPath="$PROJECT_DIR$/file_operations.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/game.py" afterPath="$PROJECT_DIR$/game.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/networking.py" afterPath="$PROJECT_DIR$/networking.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/Board.pde" afterPath="$PROJECT_DIR$/../chess/Board.pde" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/Game.pde" afterPath="$PROJECT_DIR$/../chess/Game.pde" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/button.pde" afterPath="$PROJECT_DIR$/../chess/button.pde" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/chess.pde" afterPath="$PROJECT_DIR$/../chess/chess.pde" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/GameLink.pde" afterPath="$PROJECT_DIR$/../chess/GameLink.pde" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows32/source/GameLink.pde" afterPath="$PROJECT_DIR$/../chess/application.windows32/source/GameLink.pde" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows32/source/chess.java" afterPath="$PROJECT_DIR$/../chess/application.windows32/source/chess.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows32/source/input_handler.pde" afterPath="$PROJECT_DIR$/../chess/application.windows32/source/input_handler.pde" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows32/source/netorking.pde" afterPath="$PROJECT_DIR$/../chess/application.windows32/source/netorking.pde" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows32/source/serverbrowser.pde" afterPath="$PROJECT_DIR$/../chess/application.windows32/source/serverbrowser.pde" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows32/source/vars.pde" afterPath="$PROJECT_DIR$/../chess/application.windows32/source/vars.pde" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows64/assets/background/sources.txt" afterPath="$PROJECT_DIR$/../chess/application.windows64/assets/background/sources.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows64/source/GameLink.pde" afterPath="$PROJECT_DIR$/../chess/application.windows64/source/GameLink.pde" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows64/source/chess.java" afterPath="$PROJECT_DIR$/../chess/application.windows64/source/chess.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows64/source/input_handler.pde" afterPath="$PROJECT_DIR$/../chess/application.windows64/source/input_handler.pde" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows64/source/netorking.pde" afterPath="$PROJECT_DIR$/../chess/application.windows64/source/netorking.pde" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows64/source/serverbrowser.pde" afterPath="$PROJECT_DIR$/../chess/application.windows64/source/serverbrowser.pde" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows64/source/vars.pde" afterPath="$PROJECT_DIR$/../chess/application.windows64/source/vars.pde" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/assets/background/sources.txt" afterPath="$PROJECT_DIR$/../chess/assets/background/sources.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/input_handler.pde" afterPath="$PROJECT_DIR$/../chess/input_handler.pde" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/menu.pde" afterPath="$PROJECT_DIR$/../chess/menu.pde" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/netorking.pde" afterPath="$PROJECT_DIR$/../chess/netorking.pde" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/serverbrowser.pde" afterPath="$PROJECT_DIR$/../chess/serverbrowser.pde" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/textbox.pde" afterPath="$PROJECT_DIR$/../chess/textbox.pde" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/vars.pde" afterPath="$PROJECT_DIR$/../chess/vars.pde" />
     </list>
     <ignored path="chess server.iws" />
@@ -50,11 +59,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="command_interpreter.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="command_interpreter.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/command_interpreter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="30" column="21" selection-start-line="30" selection-start-column="21" selection-end-line="30" selection-end-column="21" />
+            <state vertical-scroll-proportion="0.7306338">
+              <caret line="130" column="0" selection-start-line="130" selection-start-column="0" selection-end-line="130" selection-end-column="0" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
                 <element signature="e#1052#2825#0" expanded="false" />
@@ -84,10 +93,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="networking.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="networking.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/networking.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7007042">
+            <state vertical-scroll-proportion="0.0">
               <caret line="162" column="0" selection-start-line="162" selection-start-column="0" selection-end-line="162" selection-end-column="0" />
               <folding>
                 <element signature="e#21#34#0" expanded="true" />
@@ -182,13 +191,13 @@
         <option value="$PROJECT_DIR$/player.py" />
         <option value="$PROJECT_DIR$/file_operations.py" />
         <option value="$PROJECT_DIR$/game.py" />
-        <option value="$PROJECT_DIR$/command_interpreter.py" />
         <option value="$PROJECT_DIR$/networking.py" />
+        <option value="$PROJECT_DIR$/command_interpreter.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
+    <option name="x" value="1912" />
     <option name="y" value="-8" />
     <option name="width" value="1936" />
     <option name="height" value="1056" />
@@ -218,6 +227,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -239,7 +249,6 @@
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -495,20 +504,19 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="false" />
+    <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.109375" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33296943" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3245243" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32972974" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36997885" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32875264" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39847162" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.397463" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -516,6 +524,7 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3245243" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -960,14 +969,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/player.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="3" column="24" selection-start-line="3" selection-start-column="24" selection-end-line="3" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/file_operations.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -988,24 +989,32 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/command_interpreter.py">
+    <entry file="file://$PROJECT_DIR$/player.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="30" column="21" selection-start-line="30" selection-start-column="21" selection-end-line="30" selection-end-column="21" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#1052#2825#0" expanded="false" />
-            <element signature="e#2849#3619#0" expanded="false" />
-          </folding>
+          <caret line="3" column="24" selection-start-line="3" selection-start-column="24" selection-end-line="3" selection-end-column="24" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/networking.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7007042">
+        <state vertical-scroll-proportion="0.0">
           <caret line="162" column="0" selection-start-line="162" selection-start-column="0" selection-end-line="162" selection-end-column="0" />
           <folding>
             <element signature="e#21#34#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/command_interpreter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7306338">
+          <caret line="130" column="0" selection-start-line="130" selection-start-column="0" selection-end-line="130" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+            <element signature="e#1052#2825#0" expanded="false" />
+            <element signature="e#2849#3619#0" expanded="false" />
           </folding>
         </state>
       </provider>

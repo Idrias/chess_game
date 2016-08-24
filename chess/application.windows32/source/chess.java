@@ -548,13 +548,40 @@ class GameLink {
 
   String description;
   int id;
-  
+  PVector pos;
+  boolean selected = false;
+
   GameLink(String i_description, int i_id) {
     description = i_description;
     id = i_id;
+    pos = new PVector(-1, -1);
   }
 
 
+
+  public void draw() {
+    fill(0xffDDFF1F);
+    text(description, pos.x, pos.y);
+    
+    noFill();
+    stroke(255, 0, 0);
+    if(selected) rect(130, pos.y-11, width-130, pos.y+15);
+    
+  }
+
+
+  public void get_physical(int i_posx, int i_posy) {
+    pos = new PVector(i_posx, i_posy);
+  }
+
+
+  public boolean checkclick() {
+    if (mouseX > 112 && mouseX < width-112) {
+      if (mouseY > pos.y-11 && mouseY < pos.y + 15) 
+        return true;
+    }
+    return false;
+  }
 }
 class ReferencedImage {
   PImage image;
@@ -668,6 +695,14 @@ class InputHandler {
     } else if (!mousePressed) registeredMouseClick = false;
   }
 }
+
+
+
+public void mouseWheel(MouseEvent e) {
+  if(game.state == SERVERBROWSER) browser.startOfScope += e.getCount();
+
+}
+
 
 
 public void keyPressed() {
@@ -890,7 +925,7 @@ class Networker {
 
 
   public void close() {
-    if (client.active()) 
+    if (client !=  null && client.active()) 
       client.stop();
   }
 
@@ -1079,9 +1114,9 @@ class Networker {
 
 
 
-  public void joinGame(String id, String name) {
+  public void joinGame(String id, String name, String password) {
     if(!active()) return;
-    addMessage("JOIN GAME", new String[]{id, str(preference), name});
+    addMessage("JOIN GAME", new String[]{id, str(preference), name, password});
   }
 
 
@@ -1142,6 +1177,8 @@ class Serverbrowser {
 
   int mode = UNDEFINED;  
   int lastID = -1;
+  
+  int startOfScope = 0;
 
   Serverbrowser() {
     // Find background
@@ -1239,6 +1276,22 @@ class Serverbrowser {
 
     // Game List
     strokeWeight(2);
+
+    fill(0xffDDFF1F);
+    
+   if(startOfScope < 0) startOfScope = 0;
+   else if(startOfScope > glinks.size()) startOfScope = glinks.size();
+   
+   textSize(50);
+   if(startOfScope > 0) text("...", width/2, 60);
+   if(startOfScope + 8 < glinks.size()) text("...", width/2, (75+25*(8+1)-15));
+   textSize(18);
+   
+   
+   for(int i = startOfScope; i < glinks.size() && i < startOfScope+8; i++) {
+      glinks.get(i).get_physical(width/2, 75+25*(i-startOfScope+1)+2);
+      glinks.get(i).draw();
+    }
     
     if(net.active()) {stroke(0xff0EE830); fill(0xff0EE830);}
     else {stroke(0xffFA5103); fill(0xffFA5103);}
@@ -1258,10 +1311,7 @@ class Serverbrowser {
     noFill();
     rect(112, 62, width-112, 319);
     
-    for(int i = 0; i < glinks.size() && i < 10; i++) {
-      fill(0xffDDFF1F);
-      text(glinks.get(i).description, 333, 75+25*i);
-    }
+
     
     //rect(113, 63, width-113, 318);
     
@@ -1315,12 +1365,27 @@ class Serverbrowser {
     if(enterServerIP_state == true && enterServerIP.active == false) {enterServerIP.active = true; establishGamebrowser();}
 
 
+    for(GameLink g : glinks) {
+      if(g.checkclick()) {
+        g.selected = !g.selected;
+        for(int i=0; i<glinks.size(); i++) if(glinks.get(i) != g) glinks.get(i).selected = false; 
+      }
+    }
+
+
+
     if (createGame.mouseOver() && mode == CREATE) {
       net.createGame(pathToXML, enterPasswordCreate.content);
     }
 
     if (joinGame.mouseOver() && mode == JOIN) {
-
+      GameLink g = null;
+      for(GameLink q : glinks) if(q.selected) g = q; 
+      if(g == null) return;
+      
+      net.joinGame( str(g.id), enterName.content, enterPassword.content );
+      
+      // ID NAME PASSWORT
     }
     
     if (selectFile.mouseOver() && mode == CREATE) {
@@ -1506,6 +1571,7 @@ public void load_images() {
     images.add(new ReferencedImage("/assets/background/wood-texture.jpg", "wooden background"));
     images.add(new ReferencedImage("/assets/background/studyroom.jpg", "study room"));
     images.add(new ReferencedImage("/assets/background/server.jpg", "server room"));
+    images.add(new ReferencedImage("/assets/background/bnw.png", "checkmate"));
   
   // Figures
     // White
