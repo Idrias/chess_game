@@ -662,6 +662,8 @@ class Button {
  
   
   public boolean mouseOver() {
+    if(!state) {drawcol = 100; return false;}
+    
     if(mouseX >= pos.x - size.x/2 && mouseX <= pos.x + size.x/2 && mouseY >= pos.y - size.y/2 && mouseY <= pos.y + size.y/2) {
       drawcol = col2nd;
       return true;
@@ -724,8 +726,8 @@ public void mouseWheel(MouseEvent e) {
 public void keyPressed() {
   if (key == ESC)
   {
-    if (net!=null) net.close(); 
-    game.state = MENU; 
+    if (net!=null) net.restart(); 
+    game.state = SERVERBROWSER; 
     key='0'; 
     return;
   }
@@ -954,6 +956,12 @@ class Networker {
     if (client !=  null && client.active()) 
       client.stop();
   }
+  
+  
+  public void restart() {
+    client.stop();
+    client = new Client(sketchRef, serverIP, serverPORT);
+  }
 
 
   public void comCheck() {
@@ -1031,7 +1039,6 @@ class Networker {
     if (command.equals("ADD FIGURE")) {
       Figure f = new Figure(PApplet.parseInt(arguments.get(0)), PApplet.parseInt(arguments.get(1)), new PVector(PApplet.parseInt(arguments.get(2)), PApplet.parseInt(arguments.get(3))));
 
-      println(arguments.get(4));
       if (arguments.get(4).equals("True")) f.hasMoved = true;
       game.board.fields[PApplet.parseInt(f.pos.x)][PApplet.parseInt(f.pos.y)].figure = f;
     }
@@ -1046,6 +1053,7 @@ class Networker {
     
     if (command.equals("CODE IS")) {
       browser.lastID = PApplet.parseInt(arguments.get(0));
+      browser.nextCreationPossibility = millis() + PApplet.parseInt(arguments.get(1))*1000;
     }
     
     if (command.equals("GAME")) {
@@ -1061,6 +1069,7 @@ class Networker {
              linkString += "BLACK: " + arguments.get(2);
       
       browser.glinks.add( new GameLink(linkString, linkID)  );
+      browser.sortGameLinks();
     }
 
 
@@ -1072,6 +1081,16 @@ class Networker {
           game.board.nameBLACK = arguments.get(2);
         }
       }
+    }
+    
+    
+    if(command.equals("CREATION ERROR")) {
+      println(arguments.get(0), arguments.get(1));
+    }
+    
+    println(command);
+    if(command.equals("JOIN REJECTED")) {
+      if(arguments.get(0).equals("WRONG PASSWORD")) {browser.enterPassword.correct(2);}
     }
   }
 
@@ -1142,6 +1161,7 @@ class Networker {
 
   public void joinGame(String id, String name, String password) {
     if(!active()) return;
+    if(name.equals("")) {browser.enterName.correct(2); return;}
     addMessage("JOIN GAME", new String[]{id, str(preference), name, password});
   }
 
@@ -1208,6 +1228,7 @@ class Serverbrowser {
 
   int mode = UNDEFINED;  
   int lastID = -1;
+  int nextCreationPossibility = 0;
 
   int startOfScope = 0;
 
@@ -1351,6 +1372,7 @@ class Serverbrowser {
     } else {
       stroke(0xffFA5103); 
       fill(0xffFA5103);
+      if(glinks.size() != 0) glinks = new ArrayList<GameLink>();
     }
 
 
@@ -1397,7 +1419,14 @@ class Serverbrowser {
         textSize(12);
       }
     }
-
+    
+    float timeLeft = PApplet.parseFloat(nextCreationPossibility) - PApplet.parseFloat(millis());
+    timeLeft /= 100;
+    timeLeft = PApplet.parseFloat(round(timeLeft))/10;
+    
+    if(nextCreationPossibility > millis()) {createGame.text = ""+timeLeft; createGame.state = false;}
+    else {createGame.text = "Create Game"; createGame.state = true;}
+    
     textSize(12);
 
     for (Textbox tb : textboxes) if (tb.forMode == mode || tb.forMode == ALL) tb.draw();
@@ -1430,7 +1459,6 @@ class Serverbrowser {
         }
         sortedLinks.add(smallestLink);
         for (int i=0; i<glinks.size(); i++) if (glinks.get(i) == smallestLink) {
-          println(glinks.get(i).id); 
           glinks.remove(i);
         }
       }
@@ -1444,7 +1472,7 @@ class Serverbrowser {
       Arrays.sort(strings);
       
       for(int i=0; i<strings.length; i++) {
-        for(GameLink g : glinks) if((g.pWhite+g.pBlack).equals(strings[i])) {sortedLinks.add(g); println(g.pWhite+g.pBlack, strings[i]);}
+        for(GameLink g : glinks) if((g.pWhite+g.pBlack).equals(strings[i])) {sortedLinks.add(g);}
       }
     }
     

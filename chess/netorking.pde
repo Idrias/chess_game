@@ -24,6 +24,12 @@ class Networker {
     if (client !=  null && client.active()) 
       client.stop();
   }
+  
+  
+  void restart() {
+    client.stop();
+    client = new Client(sketchRef, serverIP, serverPORT);
+  }
 
 
   void comCheck() {
@@ -149,6 +155,20 @@ class Networker {
     if(command.equals("CREATION ERROR")) {
       println(arguments.get(0), arguments.get(1));
     }
+    
+    println(command);
+    if(command.equals("JOIN REJECTED")) {
+      if(arguments.get(0).equals("WRONG PASSWORD")) {browser.enterPassword.correct(2);}
+    }
+    
+    if(command.equals("GAME REMOVED")) {
+      for(int i=0; i<browser.glinks.size(); i++) {
+        if(browser.glinks.get(i).id == int(arguments.get(0))) {
+          browser.glinks.remove(i);
+          i=0;
+        }
+      }
+    }
   }
 
 
@@ -218,6 +238,7 @@ class Networker {
 
   void joinGame(String id, String name, String password) {
     if(!active()) return;
+    if(name.equals("")) {browser.enterName.correct(2); return;}
     addMessage("JOIN GAME", new String[]{id, str(preference), name, password});
   }
 

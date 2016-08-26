@@ -30,6 +30,7 @@ class Serverbrowser {
 
   int mode = UNDEFINED;  
   int lastID = -1;
+  int nextCreationPossibility = 0;
 
   int startOfScope = 0;
 
@@ -173,6 +174,7 @@ class Serverbrowser {
     } else {
       stroke(#FA5103); 
       fill(#FA5103);
+      if(glinks.size() != 0) glinks = new ArrayList<GameLink>();
     }
 
 
@@ -219,7 +221,14 @@ class Serverbrowser {
         textSize(12);
       }
     }
-
+    
+    float timeLeft = float(nextCreationPossibility) - float(millis());
+    timeLeft /= 100;
+    timeLeft = float(round(timeLeft))/10;
+    
+    if(nextCreationPossibility > millis()) {createGame.text = ""+timeLeft; createGame.state = false;}
+    else {createGame.text = "Create Game"; createGame.state = true;}
+    
     textSize(12);
 
     for (Textbox tb : textboxes) if (tb.forMode == mode || tb.forMode == ALL) tb.draw();
@@ -252,7 +261,6 @@ class Serverbrowser {
         }
         sortedLinks.add(smallestLink);
         for (int i=0; i<glinks.size(); i++) if (glinks.get(i) == smallestLink) {
-          println(glinks.get(i).id); 
           glinks.remove(i);
         }
       }
@@ -266,7 +274,7 @@ class Serverbrowser {
       Arrays.sort(strings);
       
       for(int i=0; i<strings.length; i++) {
-        for(GameLink g : glinks) if((g.pWhite+g.pBlack).equals(strings[i])) {sortedLinks.add(g); println(g.pWhite+g.pBlack, strings[i]);}
+        for(GameLink g : glinks) if((g.pWhite+g.pBlack).equals(strings[i])) {sortedLinks.add(g);}
       }
     }
     

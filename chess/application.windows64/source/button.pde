@@ -31,6 +31,8 @@ class Button {
  
   
   boolean mouseOver() {
+    if(!state) {drawcol = 100; return false;}
+    
     if(mouseX >= pos.x - size.x/2 && mouseX <= pos.x + size.x/2 && mouseY >= pos.y - size.y/2 && mouseY <= pos.y + size.y/2) {
       drawcol = col2nd;
       return true;

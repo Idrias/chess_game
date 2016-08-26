@@ -17,6 +17,9 @@ class Game:
         self.whoseturn = WHITE #TODO
         self.xmlPath = ""
         self.password = ""
+        self.creationtime = net.ti()
+        self.movesmade = 0
+        self.lastmovetime = net.ti()
 
 
     def genID(self):

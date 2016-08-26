@@ -60,7 +60,7 @@ def create_game(m):
     game.sendlistupdate()
 
 
-def join_game(m):
+def join_game(m): #id pref name pw
     g = findGameByID(int(m.args[0]))
     if g is None:
         return
@@ -70,6 +70,14 @@ def join_game(m):
 
     preference = m.args[1]
     name = m.args[2]
+    givenPW = m.args[3]
+
+    if givenPW != g.password:
+        #Wrong password!
+        print(str(m.sender) + " entered wrong password for " + str(g.id) + "!")
+        nc.sendmessage("JOIN REJECTED", ["WRONG PASSWORD"])
+        return
+
     if name == "[EMPTY]":
         name = "Little Hacker"
 
@@ -86,15 +94,15 @@ def join_game(m):
     elif g.playerWHITE is None:
         g.playerWHITE = Player(nc, name)
         nc.sendmessage("YOU ARE", [WHITE])
-        print("WHITE connected to " + str(g.id))
+        print("WHITE ("+str(m.sender)+") connected to " + str(g.id))
     elif g.playerBLACK is None:
         g.playerBLACK = Player(nc, name)
         nc.sendmessage("YOU ARE", [BLACK])
-        print("BLACK connected to " + str(g.id))
+        print("BLACK ("+str(m.sender)+") connected to " + str(g.id))
 
     else:
         print("[SYSTEM] GAME", g.id, "IS FULL! WE HAVE TO KICK NEWEST CLIENT!")
-        nc.comsock.close()
+        nc.sendmessage("JOIN REJECTED", ["GAME FULL"])
         return
 
     for field in g.board.fields:
@@ -139,6 +147,8 @@ def movement(m):
     fieldTo.figure = fig
 
     g.whoseturn = WHITE if g.whoseturn == BLACK else BLACK
+    g.movesmade += 1
+    g.lastmovetime = net.ti()
     net.sendToAll(g.id, "TURN", [g.whoseturn])
 
 

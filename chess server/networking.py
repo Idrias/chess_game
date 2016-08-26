@@ -100,6 +100,7 @@ def welcome():
         rcv_thread.start()
 
 
+
 def rcv():
     c = ncs[-1]
 
@@ -156,6 +157,7 @@ def dcFromGame(c):
             g.playerBLACK = None
             sendToAll(g.id, "UI UPDATE", ["NAME", BLACK, "[EMPTY]"])
             print("BLACK disconnected from " + str(g.id))
+
         g.sendlistupdate()
 
 

@@ -33,8 +33,8 @@ void mouseWheel(MouseEvent e) {
 void keyPressed() {
   if (key == ESC)
   {
-    if (net!=null) net.close(); 
-    game.state = MENU; 
+    if (net!=null) net.restart(); 
+    game.state = SERVERBROWSER; 
     key='0'; 
     return;
   }
