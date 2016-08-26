@@ -101,7 +101,6 @@ class Networker {
     if (command.equals("ADD FIGURE")) {
       Figure f = new Figure(int(arguments.get(0)), int(arguments.get(1)), new PVector(int(arguments.get(2)), int(arguments.get(3))));
 
-      println(arguments.get(4));
       if (arguments.get(4).equals("True")) f.hasMoved = true;
       game.board.fields[int(f.pos.x)][int(f.pos.y)].figure = f;
     }
@@ -116,6 +115,7 @@ class Networker {
     
     if (command.equals("CODE IS")) {
       browser.lastID = int(arguments.get(0));
+      browser.nextCreationPossibility = millis() + int(arguments.get(1))*1000;
     }
     
     if (command.equals("GAME")) {
@@ -131,6 +131,7 @@ class Networker {
              linkString += "BLACK: " + arguments.get(2);
       
       browser.glinks.add( new GameLink(linkString, linkID)  );
+      browser.sortGameLinks();
     }
 
 
@@ -142,6 +143,11 @@ class Networker {
           game.board.nameBLACK = arguments.get(2);
         }
       }
+    }
+    
+    
+    if(command.equals("CREATION ERROR")) {
+      println(arguments.get(0), arguments.get(1));
     }
   }
 

@@ -26,6 +26,8 @@ class NetClient:
         self.messages = []
         self.lastResponse = ti()
         self.linkedID = 0
+        self.lastgamecreation = ti() - CREATIONCOOLDOWN
+
 
     def sendmessage(self, command, args):
         s = "$" + str(command) + ";"
@@ -154,6 +156,7 @@ def dcFromGame(c):
             g.playerBLACK = None
             sendToAll(g.id, "UI UPDATE", ["NAME", BLACK, "[EMPTY]"])
             print("BLACK disconnected from " + str(g.id))
+        g.sendlistupdate()
 
 
 def sendToAll(gameID, command, args):

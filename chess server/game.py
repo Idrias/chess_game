@@ -2,6 +2,8 @@ from random import randint
 from vars import *
 from Board import *
 
+import networking as net
+
 glist = []
 
 
@@ -31,6 +33,11 @@ class Game:
                 break
 
         print("Opened Game:", self.id)
+
+    def sendlistupdate(self):
+        whiteName = "None" if self.playerWHITE is None else self.playerWHITE.name
+        blackName = "None" if self.playerBLACK is None else self.playerBLACK.name
+        net.sendToAllAll("GAME", [self.id, whiteName, blackName])
 
 
 def findGameByID(id):

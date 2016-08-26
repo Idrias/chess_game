@@ -5,3 +5,4 @@ class Figure:
         self.hasMoved = None
         self.posx = None
         self.posy = None
+

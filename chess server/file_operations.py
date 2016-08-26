@@ -19,3 +19,26 @@ def mkdir(path):
         print("[SYSTEM / CRITICAL]: Could not find folder to mkdir in: " + path)
 
 
+def readFile(path):
+    try:
+        f = open(path, 'r')
+        s = f.readlines()
+        f.close()
+    except FileNotFoundError:
+        return []
+    return s
+
+def appendFile(path, data):
+    try:
+        f = open(path, "a")
+        f.writelines(data)
+        f.write("\n")
+        f.close()
+    except FileNotFoundError:
+        return
+
+def writeFile(path, data):
+    f = open(path, 'w')
+    f.writelines(data)
+    f.write("\n")
+    f.close()

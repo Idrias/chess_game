@@ -4,6 +4,7 @@ class ModeSelector {
   PVector size;
   String text;
   boolean state = false;
+  boolean changedFlag = false;
   color col;
   color col2nd;
   color drawcol;
@@ -24,8 +25,17 @@ class ModeSelector {
     partner = p_partner;
   }
   
-  void draw() {
+  void draw() { 
+    boolean oldState = state;
     mouseOver();
+    
+    if(oldState != state) {
+      // State has changed!
+       changedFlag = true;
+    }
+    
+    else changedFlag = false;
+    
     rectMode(CENTER);
     fill(drawcol);
     
@@ -39,7 +49,7 @@ class ModeSelector {
   
  
   
-  boolean mouseOver() {
+  boolean mouseOver() {    
     if(mouseX >= pos.x - size.x/2 && mouseX <= pos.x + size.x/2 && mouseY >= pos.y - size.y/2 && mouseY <= pos.y + size.y/2) {
       drawcol = col2nd;
       partner.state = false;

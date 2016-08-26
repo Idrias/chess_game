@@ -3,6 +3,7 @@ import processing.data.*;
 import processing.event.*; 
 import processing.opengl.*; 
 
+import java.util.Arrays; 
 import processing.net.*; 
 
 import java.util.HashMap; 
@@ -15,6 +16,7 @@ import java.io.OutputStream;
 import java.io.IOException; 
 
 public class chess extends PApplet {
+
 
 
 public void setup() {
@@ -547,6 +549,8 @@ class Game {
 class GameLink {
 
   String description;
+  String pWhite;
+  String pBlack;
   int id;
   PVector pos;
   boolean selected = false;
@@ -554,6 +558,18 @@ class GameLink {
   GameLink(String i_description, int i_id) {
     description = i_description;
     id = i_id;
+    
+    int wPosBegin = description.indexOf(":")+2;
+    int wPosEnd = description.indexOf(",", wPosBegin);
+    int bPosBegin = description.indexOf(":", wPosBegin)+2;
+    int bPosEnd = description.indexOf(",", bPosBegin);
+    if(bPosEnd == -1) bPosEnd = description.length();    
+    pWhite = description.substring(wPosBegin, wPosEnd) + "_" + id;
+    pBlack = description.substring(bPosBegin, bPosEnd) + "_" + id;
+    
+    if(pWhite.indexOf("None") != -1) pWhite = "zzz_" + pWhite;
+    if(pBlack.indexOf("None") != -1) pBlack = "zzz_" + pBlack;
+    
     pos = new PVector(-1, -1);
   }
 
@@ -855,6 +871,7 @@ class ModeSelector {
   PVector size;
   String text;
   boolean state = false;
+  boolean changedFlag = false;
   int col;
   int col2nd;
   int drawcol;
@@ -875,8 +892,17 @@ class ModeSelector {
     partner = p_partner;
   }
   
-  public void draw() {
+  public void draw() { 
+    boolean oldState = state;
     mouseOver();
+    
+    if(oldState != state) {
+      // State has changed!
+       changedFlag = true;
+    }
+    
+    else changedFlag = false;
+    
     rectMode(CENTER);
     fill(drawcol);
     
@@ -890,7 +916,7 @@ class ModeSelector {
   
  
   
-  public boolean mouseOver() {
+  public boolean mouseOver() {    
     if(mouseX >= pos.x - size.x/2 && mouseX <= pos.x + size.x/2 && mouseY >= pos.y - size.y/2 && mouseY <= pos.y + size.y/2) {
       drawcol = col2nd;
       partner.state = false;
@@ -1162,30 +1188,35 @@ class Serverbrowser {
   Button joinGame;
   Button createGame;
   Button selectFile;
+  Button scrollUp;
+  Button scrollDown;
 
   LightSwitch prefSwitch;
 
   ModeSelector selJoin;
   ModeSelector selCreate;
+  ModeSelector selSortID;
+  ModeSelector selSortName;
 
   ArrayList<Textbox> textboxes;
   ArrayList<Button> buttons;
   ArrayList<GameLink> glinks;
+  ArrayList<ModeSelector> mselectors;
 
   String pathToXML;
   String defaultFile = "default_board.xml";
 
   int mode = UNDEFINED;  
   int lastID = -1;
-  
+
   int startOfScope = 0;
 
   Serverbrowser() {
     // Find background
     background = find_referencedImage("server room");
     init_ui();
-    
-    
+
+
     glinks = new ArrayList<GameLink>();
   }
 
@@ -1254,23 +1285,44 @@ class Serverbrowser {
     selectFile = new Button( new PVector(423, 504), new PVector(120, 25), color(0xffDDFF1F), color(0xffEDFF7C), "Select File", true);
     selectFile.forMode = CREATE;
     buttons.add(selectFile);
+
+    // Scroll Buttons
+    scrollUp = new Button( new PVector(899, 127), new PVector(20, 128), color(0xffDDFF1F), color(0xffEDFF7C), "\u028c", true);
+    scrollDown = new Button( new PVector(899, 256), new PVector(20, 128), color(0xffDDFF1F), color(0xffEDFF7C), "v", true);
+    scrollUp.forMode = ALL;
+    scrollDown.forMode = ALL;
+    buttons.add(scrollUp);
+    buttons.add(scrollDown);
     //** END OF BUTTONS
 
     prefSwitch = new LightSwitch(new PVector(width/2+255, height/2+121), new PVector(width/2-348, height/2+-310), 255, 200, "White", 0, 55, "Black", true);
+
+    //** MODE SELECTORS
+    mselectors = new ArrayList<ModeSelector>();
 
     selJoin = new ModeSelector(new PVector(435, 360), new PVector(130, 35), color(0xffDDFF1F), color(0xffDDFF1F), "Join Game", true);
     selCreate = new ModeSelector( new PVector(565, 360), new PVector(130, 35), color(0xffDDFF1F), color(0xffDDFF1F), "Create Game", false);
     selJoin.set_partner(selCreate);
     selCreate.set_partner(selJoin);
+    mselectors.add(selJoin);
+    mselectors.add(selCreate);
+
+    selSortID = new ModeSelector(new PVector(95, 100), new PVector(35, 30), color(0xffDDFF1F), color(0xffDDFF1F), "ID", true);
+    selSortName = new ModeSelector( new PVector(95, 131), new PVector(35, 30), color(0xffDDFF1F), color(0xffDDFF1F), "ABC", false);
+    selSortID.set_partner(selSortName);
+    selSortName.set_partner(selSortID);
+    mselectors.add(selSortID);
+    mselectors.add(selSortName);
+    //** END OF MODE SELECTORS
   }
 
 
 
-  public void draw() {
-     if(selJoin.state && !selCreate.state) mode = JOIN;
-     else if(selCreate.state && !selJoin.state) mode = CREATE;
-     else mode = UNDEFINED;
-     
+  public void draw() { 
+    if (selJoin.state && !selCreate.state) mode = JOIN;
+    else if (selCreate.state && !selJoin.state) mode = CREATE;
+    else mode = UNDEFINED;
+
     // Background Image
     image(background, width/2, height/2);
 
@@ -1278,97 +1330,145 @@ class Serverbrowser {
     strokeWeight(2);
 
     fill(0xffDDFF1F);
-    
-   if(startOfScope < 0) startOfScope = 0;
-   else if(startOfScope > glinks.size()) startOfScope = glinks.size();
-   
-   textSize(50);
-   if(startOfScope > 0) text("...", width/2, 60);
-   if(startOfScope + 8 < glinks.size()) text("...", width/2, (75+25*(8+1)-15));
-   textSize(18);
-   
-   
-   for(int i = startOfScope; i < glinks.size() && i < startOfScope+8; i++) {
+
+    if (startOfScope < 0) startOfScope = 0;
+    else if (startOfScope > glinks.size()) startOfScope = glinks.size();
+
+    textSize(50);
+    if (startOfScope > 0) text("...", width/2, 60);
+    if (startOfScope + 8 < glinks.size()) text("...", width/2, (75+25*(8+1)-15));
+    textSize(18);
+
+
+    for (int i = startOfScope; i < glinks.size() && i < startOfScope+8; i++) {
       glinks.get(i).get_physical(width/2, 75+25*(i-startOfScope+1)+2);
       glinks.get(i).draw();
     }
-    
-    if(net.active()) {stroke(0xff0EE830); fill(0xff0EE830);}
-    else {stroke(0xffFA5103); fill(0xffFA5103);}
-    
+
+    if (net.active()) {
+      stroke(0xff0EE830); 
+      fill(0xff0EE830);
+    } else {
+      stroke(0xffFA5103); 
+      fill(0xffFA5103);
+    }
+
 
 
 
     //fill(#0EE830);
-    
+
     textSize(20);
     text("Active Games", 180, 47);
-    
-    if(net.active()) text("(Connected)", 318, 47);
+
+    if (net.active()) text("(Connected)", 318, 47);
     else text("(Disconnected)", 331, 47);
 
 
     noFill();
     rect(112, 62, width-112, 319);
-    
 
-    
+
+
     //rect(113, 63, width-113, 318);
-    
+
     fill(0xffDDFF1F);
     text("Server IP:", 641, 47);
 
     // Mode JOIN
-    if(mode == JOIN) {
+    if (mode == JOIN) {
       text("Player:", 167, 462);
       text("Preference:", 602, 462);
       text("Password:", 167, 572);
       textSize(12);
       prefSwitch.draw();
     }
-    
+
     // Mode CREATE
-    if(mode == CREATE) {
-    text("XML file:", 167, 462);
-    text("Password:", 167, 572);
-    
-    if(lastID != -1) {
-      textSize(16);
-      text("Game created on server " + net.serverIP + "!", 695, 460);
-      textSize(16);
-      text("(ID: " + lastID+")", 690, 481);
-      textSize(12);
+    if (mode == CREATE) {
+      text("XML file:", 167, 462);
+      text("Password:", 167, 572);
+
+      if (lastID != -1) {
+        textSize(16);
+        text("Game created on server " + net.serverIP + "!", 695, 460);
+        textSize(16);
+        text("(ID: " + lastID+")", 690, 481);
+        textSize(12);
       }
     }
-    
+
     textSize(12);
 
-    for (Textbox tb : textboxes) if(tb.forMode == mode || tb.forMode == ALL) tb.draw();
-    for (Button b : buttons) if(b.forMode == mode || b.forMode == ALL) b.draw();
-    
-    selJoin.draw();
-    selCreate.draw();
+    for (Textbox tb : textboxes) if (tb.forMode == mode || tb.forMode == ALL) tb.draw();
+    for (Button b : buttons) if (b.forMode == mode || b.forMode == ALL) b.draw();
+    for (ModeSelector m : mselectors) m.draw();
 
     stroke(0); 
     strokeWeight(1);
 
+
+    if (selSortID.changedFlag || selSortName.changedFlag) sortGameLinks();
   }
 
 
+  public void sortGameLinks() {
+
+    ArrayList<GameLink> sortedLinks = new ArrayList<GameLink>();
+
+    if (selSortID.state) {
+      // Sort by ID
+      while (glinks.size() > 0) {
+        int smallestNum = -1;
+        GameLink smallestLink = null;
+        for (int i=0; i<glinks.size(); i++) {
+          if (glinks.get(i).id < smallestNum || smallestNum == -1) {
+            smallestLink = glinks.get(i);
+            smallestNum = smallestLink.id;
+            i = 0;
+          }
+        }
+        sortedLinks.add(smallestLink);
+        for (int i=0; i<glinks.size(); i++) if (glinks.get(i) == smallestLink) {
+          println(glinks.get(i).id); 
+          glinks.remove(i);
+        }
+      }
+    }
+    
+    
+    else {
+      // Sort by name
+      String[] strings = new String[ glinks.size() ];
+      for(int i=0; i<glinks.size(); i++) strings[i] = glinks.get(i).pWhite + glinks.get(i).pBlack;
+      Arrays.sort(strings);
+      
+      for(int i=0; i<strings.length; i++) {
+        for(GameLink g : glinks) if((g.pWhite+g.pBlack).equals(strings[i])) {sortedLinks.add(g); println(g.pWhite+g.pBlack, strings[i]);}
+      }
+    }
+    
+    
+    glinks = sortedLinks;
+  }
+
 
   public void checkclick() { 
-    
+
     boolean enterServerIP_state = enterServerIP.active;
-  
+
     for (Textbox tb : textboxes) tb.active = tb.mouseOver() && tb.forMode == mode || tb.forMode == ALL && tb.mouseOver() ? true : false;
-    
-    if(enterServerIP_state == true && enterServerIP.active == false) {enterServerIP.active = true; establishGamebrowser();}
+
+    if (enterServerIP_state == true && enterServerIP.active == false) {
+      enterServerIP.active = true; 
+      establishGamebrowser();
+    }
 
 
-    for(GameLink g : glinks) {
-      if(g.checkclick()) {
+    for (GameLink g : glinks) {
+      if (g.checkclick()) {
         g.selected = !g.selected;
-        for(int i=0; i<glinks.size(); i++) if(glinks.get(i) != g) glinks.get(i).selected = false; 
+        for (int i=0; i<glinks.size(); i++) if (glinks.get(i) != g) glinks.get(i).selected = false;
       }
     }
 
@@ -1380,18 +1480,25 @@ class Serverbrowser {
 
     if (joinGame.mouseOver() && mode == JOIN) {
       GameLink g = null;
-      for(GameLink q : glinks) if(q.selected) g = q; 
-      if(g == null) return;
-      
+      for (GameLink q : glinks) if (q.selected) g = q; 
+      if (g == null) return;
+
       net.joinGame( str(g.id), enterName.content, enterPassword.content );
-      
+
       // ID NAME PASSWORT
     }
-    
+
     if (selectFile.mouseOver() && mode == CREATE) {
       openXMLSelector();
     }
 
+    if (scrollDown.mouseOver()) {
+      startOfScope += 1;
+    }
+
+    if (scrollUp.mouseOver()) {
+      startOfScope -= 1;
+    }
 
     if (prefSwitch.mouseOver()) {
       prefSwitch.press();

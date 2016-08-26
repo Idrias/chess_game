@@ -4,6 +4,7 @@ import file_operations as fileops
 import networking as net
 from game import *
 from player import *
+from vars import *
 
 
 # Gittest
@@ -24,12 +25,24 @@ def interpret(m):
 
 
 def create_game(m):
+
+    c = net.getClientByAddr(m.sender)
+
+    if len(glist) > MAXID - MINID:
+        c.sendmessage("CREATION ERROR", ["FULL", str(len(glist))])
+        return
+
+    if net.ti() < c.lastgamecreation+CREATIONCOOLDOWN:
+        c.sendmessage("CREATION ERROR", ["COOLDOWN", str(round(c.lastgamecreation+CREATIONCOOLDOWN-net.ti(), 1))])
+        return
+
     game = Game()
     glist.append(game)
+    c.lastgamecreation = net.ti()
 
     game.password = m.args[0]
-    net.sendToAllAll("GAME", [game.id, game.playerWHITE, game.playerBLACK])
 
+    fileops.appendFile("./xml/packlist.chess", [str(game.id)])
     fileops.rmdir("./xml/" + str(game.id))
     fileops.mkdir("./xml/" + str(game.id))
 
@@ -43,7 +56,8 @@ def create_game(m):
     for figure in figures:
         game.board.getFieldByCords(figure.posx, figure.posy).figure = figure
 
-    net.getClientByAddr(m.sender).sendmessage("CODE IS", [game.id])
+    c.sendmessage("CODE IS", [game.id, CREATIONCOOLDOWN])
+    game.sendlistupdate()
 
 
 def join_game(m):
@@ -96,6 +110,8 @@ def join_game(m):
         net.sendToAll(g.id, "UI UPDATE", ["NAME", WHITE, g.playerWHITE.name])
     else:
         net.sendToAll(g.id, "UI UPDATE", ["NAME", BLACK, "[EMPTY]"])
+
+    g.sendlistupdate()
     # TODO SUPPORT SPECTATORS
 
 

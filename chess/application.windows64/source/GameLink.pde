@@ -1,6 +1,8 @@
 class GameLink {
 
   String description;
+  String pWhite;
+  String pBlack;
   int id;
   PVector pos;
   boolean selected = false;
@@ -8,6 +10,18 @@ class GameLink {
   GameLink(String i_description, int i_id) {
     description = i_description;
     id = i_id;
+    
+    int wPosBegin = description.indexOf(":")+2;
+    int wPosEnd = description.indexOf(",", wPosBegin);
+    int bPosBegin = description.indexOf(":", wPosBegin)+2;
+    int bPosEnd = description.indexOf(",", bPosBegin);
+    if(bPosEnd == -1) bPosEnd = description.length();    
+    pWhite = description.substring(wPosBegin, wPosEnd) + "_" + id;
+    pBlack = description.substring(bPosBegin, bPosEnd) + "_" + id;
+    
+    if(pWhite.indexOf("None") != -1) pWhite = "zzz_" + pWhite;
+    if(pBlack.indexOf("None") != -1) pBlack = "zzz_" + pBlack;
+    
     pos = new PVector(-1, -1);
   }
 
