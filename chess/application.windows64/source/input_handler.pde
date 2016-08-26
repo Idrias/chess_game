@@ -33,8 +33,9 @@ void mouseWheel(MouseEvent e) {
 void keyPressed() {
   if (key == ESC)
   {
-    if (net!=null) net.restart(); 
-    game.state = SERVERBROWSER; 
+    if (net!=null) net.restart();
+    net.addMessage("LIST GAMES", new String[]{});
+    game.state = SERVERBROWSER;
     key='0'; 
     return;
   }

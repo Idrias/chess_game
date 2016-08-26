@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<board>
+  <meta>
+    <sizeX>8</sizeX>
+    <sizeY>8</sizeY>
+    <turn>black</turn>
+    <movesmade>7</movesmade>
+    <password>12345</password>
+  </meta>
+  <figures>
+    <figure color="black" hasMoved="no" xloc="a" yloc="8">Tower</figure>
+    <figure color="black" hasMoved="no" xloc="a" yloc="7">Pawn</figure>
+    <figure color="white" hasMoved="no" xloc="a" yloc="2">Pawn</figure>
+    <figure color="white" hasMoved="no" xloc="a" yloc="1">Tower</figure>
+    <figure color="black" hasMoved="no" xloc="b" yloc="8">Horse</figure>
+    <figure color="black" hasMoved="no" xloc="b" yloc="7">Pawn</figure>
+    <figure color="white" hasMoved="no" xloc="b" yloc="2">Pawn</figure>
+    <figure color="white" hasMoved="no" xloc="b" yloc="1">Horse</figure>
+    <figure color="black" hasMoved="no" xloc="c" yloc="8">Bishop</figure>
+    <figure color="black" hasMoved="no" xloc="c" yloc="7">Pawn</figure>
+    <figure color="white" hasMoved="no" xloc="c" yloc="2">Pawn</figure>
+    <figure color="white" hasMoved="no" xloc="c" yloc="1">Bishop</figure>
+    <figure color="black" hasMoved="no" xloc="d" yloc="8">Queen</figure>
+    <figure color="black" hasMoved="no" xloc="d" yloc="7">Pawn</figure>
+    <figure color="white" hasMoved="yes" xloc="d" yloc="5">Pawn</figure>
+    <figure color="white" hasMoved="no" xloc="d" yloc="1">Queen</figure>
+    <figure color="black" hasMoved="no" xloc="e" yloc="8">King</figure>
+    <figure color="white" hasMoved="no" xloc="e" yloc="2">Pawn</figure>
+    <figure color="white" hasMoved="no" xloc="e" yloc="1">King</figure>
+    <figure color="black" hasMoved="no" xloc="f" yloc="8">Bishop</figure>
+    <figure color="black" hasMoved="no" xloc="f" yloc="7">Pawn</figure>
+    <figure color="white" hasMoved="yes" xloc="f" yloc="3">Pawn</figure>
+    <figure color="white" hasMoved="no" xloc="f" yloc="1">Bishop</figure>
+    <figure color="black" hasMoved="no" xloc="g" yloc="8">Horse</figure>
+    <figure color="black" hasMoved="no" xloc="g" yloc="7">Pawn</figure>
+    <figure color="white" hasMoved="no" xloc="g" yloc="1">Horse</figure>
+    <figure color="black" hasMoved="no" xloc="h" yloc="8">Tower</figure>
+    <figure color="black" hasMoved="no" xloc="h" yloc="7">Pawn</figure>
+    <figure color="white" hasMoved="no" xloc="h" yloc="2">Pawn</figure>
+    <figure color="white" hasMoved="no" xloc="h" yloc="1">Tower</figure>
+  </figures>
+</board>
+

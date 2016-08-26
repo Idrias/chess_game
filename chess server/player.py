@@ -7,5 +7,3 @@ class Player:
 
 
 
-
-# TODO IMPLEMENT TIME KICK

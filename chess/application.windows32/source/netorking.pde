@@ -27,6 +27,7 @@ class Networker {
   
   
   void restart() {
+    if(client == null) return;
     client.stop();
     client = new Client(sketchRef, serverIP, serverPORT);
   }
@@ -159,6 +160,15 @@ class Networker {
     println(command);
     if(command.equals("JOIN REJECTED")) {
       if(arguments.get(0).equals("WRONG PASSWORD")) {browser.enterPassword.correct(2);}
+    }
+    
+    if(command.equals("GAME REMOVED")) {
+      for(int i=0; i<browser.glinks.size(); i++) {
+        if(browser.glinks.get(i).id == int(arguments.get(0))) {
+          browser.glinks.remove(i);
+          i=0;
+        }
+      }
     }
   }
 

@@ -7,9 +7,10 @@ from player import *
 from vars import *
 
 
-# Gittest
-
 def interpret(m):
+    print(m.command)
+    for arg in m.args:
+        print(arg)
 
     if m.command == "MOVEMENT REQUEST":
         movement(m)
@@ -42,7 +43,7 @@ def create_game(m):
 
     game.password = m.args[0]
 
-    fileops.appendFile("./xml/packlist.chess", [str(game.id)])
+    fileops.appendFile("./xml/packlist.chess", [str(game.id)+":0"])
     fileops.rmdir("./xml/" + str(game.id))
     fileops.mkdir("./xml/" + str(game.id))
 
@@ -52,22 +53,29 @@ def create_game(m):
     xmlPath += str(game.latestXML) + ".xml"
     XML.create_xml(xmlPath, m.args[1:])
 
+    m = XML.parse_meta(xmlPath)
+    game.whoseturn = WHITE if m["turn"] == "white" else BLACK
+    game.board.xSize = int(m["sizeX"])
+    game.board.ySize = int(m["sizeY"])
+    game.board.setup_fields()
+
     figures = XML.parse_figures(xmlPath)
     for figure in figures:
         game.board.getFieldByCords(figure.posx, figure.posy).figure = figure
+
 
     c.sendmessage("CODE IS", [game.id, CREATIONCOOLDOWN])
     game.sendlistupdate()
 
 
 def join_game(m): #id pref name pw
+
     g = findGameByID(int(m.args[0]))
     if g is None:
         return
 
     nc = net.getClientByAddr(m.sender)
     nc.linkedID = int(m.args[0])
-
     preference = m.args[1]
     name = m.args[2]
     givenPW = m.args[3]
@@ -80,7 +88,7 @@ def join_game(m): #id pref name pw
 
     if name == "[EMPTY]":
         name = "Little Hacker"
-
+    print(name)
     if g.playerWHITE is None and g.playerBLACK is None:
         if int(preference) == BLACK:
             g.playerBLACK = Player(nc, name)
@@ -117,7 +125,7 @@ def join_game(m): #id pref name pw
     if g.playerWHITE is not None:
         net.sendToAll(g.id, "UI UPDATE", ["NAME", WHITE, g.playerWHITE.name])
     else:
-        net.sendToAll(g.id, "UI UPDATE", ["NAME", BLACK, "[EMPTY]"])
+        net.sendToAll(g.id, "UI UPDATE", ["NAME", WHITE, "[EMPTY]"])
 
     g.sendlistupdate()
     # TODO SUPPORT SPECTATORS
@@ -150,6 +158,11 @@ def movement(m):
     g.movesmade += 1
     g.lastmovetime = net.ti()
     net.sendToAll(g.id, "TURN", [g.whoseturn])
+
+    XML.createSave("./xml/"+str(g.id)+"/"+str(g.movesmade)+".xml", g)
+    fileops.replaceLine("./xml/packlist.chess", str(g.id)+":"+str(g.movesmade-1), str(g.id)+":"+str(g.movesmade))
+
+
 
 
 def list_games(m):

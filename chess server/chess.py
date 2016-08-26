@@ -9,6 +9,7 @@ frameCount = 0
 
 def setup():
     fileops.mkdir("xml")
+    fileops.loadGames()
     net.setup_net()
 
 
@@ -28,14 +29,12 @@ def draw():
 
 def collectGarbage():
     for g in glist:
-        if g.movesmade < 4 and g.playerWHITE is None and g.playerBLACK is None \
-                and net.ti() > g.creationtime + MAXBEGINIDLE:
+        if (g.movesmade < 4 and g.playerWHITE is None and g.playerBLACK is None \
+                and net.ti() > g.creationtime + MAXBEGINIDLE) or net.ti()-g.lastmovetime > MAXIDLE:
             glist.remove(g) #heavy TODO
             net.sendToAllAll("GAME REMOVED", [str(g.id)])
+            fileops.removeLine("./xml/packlist.chess", str(g.id)+str(":")+str(g.movesmade))
 
-        elif net.ti()-g.lastmovetime > MAXIDLE:
-            glist.remove(g)
-            net.sendToAllAll("GAME REMOVED", [str(g.id)])
 
 setup()
 
