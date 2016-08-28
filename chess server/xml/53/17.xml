@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<board>
+  <meta>
+    <sizeX>8</sizeX>
+    <sizeY>8</sizeY>
+    <turn>black</turn>
+    <movesmade>17</movesmade>
+    <password/>
+  </meta>
+  <figures>
+    <figure color="white" hasMoved="yes" xloc="b" yloc="2">King</figure>
+    <figure color="black" hasMoved="yes" xloc="d" yloc="2">King</figure>
+  </figures>
+</board>
+

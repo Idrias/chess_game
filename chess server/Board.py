@@ -1,7 +1,7 @@
 from Field import *
 from vars import *
 from PossibleMove import *
-from copy import deepcopy
+import copy
 
 
 class Board:
@@ -45,6 +45,7 @@ class Board:
             notC = WHITE if f.col == BLACK else BLACK
 
             if f.type == KING:
+                print("Imaginary King:", f.posx, f.posy)
                 if self.isFieldInDanger(f.posx, f.posy, notC):
                     if c == WHITE:
                         self.isWhiteCheck = True
@@ -56,8 +57,7 @@ class Board:
                     elif c == BLACK:
                         self.isBlackCheck = False
 
-
-    def findValidMoves(self, color, rochadeAllowed):
+    def findValidMoves(self, color, topLevel):
 
         FRIENDLY = color
         HOSTILE = WHITE if FRIENDLY == BLACK else BLACK
@@ -94,6 +94,7 @@ class Board:
                 if field.figure.col == FRIENDLY:
                     possibleFigures.append(field.figure)
 
+        # start finding moves
         for f in possibleFigures:
             px = f.posx
             py = f.posy
@@ -234,10 +235,11 @@ class Board:
                 if v(px - 1, py - 1):
                     vmoves.append(PossibleMove(FRIENDLY, px, py, px - 1, py - 1, f, gf(px - 1, py - 1)))
 
+
                 """
                 for t in possibleFigures:
                     if t.type == TOWER:
-                        if not f.hasMoved and not t.hasMoved and rochadeAllowed:
+                        if not f.hasMoved and not t.hasMoved and topLevel:
                             if not self.isCheck(FRIENDLY):
                                 if t.posx == px - 4:
                                     if not self.isFieldInDanger(px - 1, py, HOSTILE) and e(px - 1, py):
@@ -258,40 +260,54 @@ class Board:
                                             vmoves[-1].towerComponentTo = px + 1
 
                 """
-        # check if the moves set the king mate
-        for vm in vmoves:
-            if vm.toFieldX == 4 and vm.toFieldY == 6:
-                print("OMG WTF")
-        """
-        if rochadeAllowed:
+        # end finding moves
+
+
+        # look if the moves would cause checkmate
+        returnmoves = []
+
+
+        if topLevel:
             for vm in vmoves:
-                imaginary = deepcopy(self)
+                imaginary = copy.deepcopy(self)
+                imaginary.fields = copy.deepcopy(self.fields)
+
                 imaginary.getFieldByCords(vm.fromFieldX, vm.fromFieldY).figure = None
                 imaginary.getFieldByCords(vm.toFieldX, vm.toFieldY).figure = vm.friendlyFigure
 
+                for f in self.fields:
+                    fig = f.figure
+                    if fig is not None:
+                        if fig.type == KING:
+                            print("REAL KING:", fig.posx, fig.posy)
+
+                for f in imaginary.fields:
+                    fig = f.figure
+                    if fig is not None:
+                        if fig.type == KING:
+                            print("HALF IMAGINARY KING:", fig.posx, fig.posy, imaginary.getFieldByCords(fig.posx, fig.posy).figure)
+
+
+                """
                 if vm.isRochade:
                     imaginary.getFieldByCords(vm.towerComponentTo, vm.toFieldY).figure = imaginary.getFieldByCords(
                         vm.towerComponentFrom, vm.toFieldY).figure
                     imaginary.getFieldByCords(vm.towerComponentFrom, vm.toFieldY).figure = None
-
+                """
 
                 imaginary.checkCheck()
-                if vm.toFieldX == 4 and vm.toFieldY == 6:
-                    print("OMG WTF:", imaginary.isWhiteCheck)
+
                 if FRIENDLY == WHITE and imaginary.isWhiteCheck or FRIENDLY == BLACK and imaginary.isBlackCheck:
-                    print("OH NO")
-                    vmoves.remove(vm)
-        """
+                    continue
+                else:
+                    returnmoves.append(vm)
 
 
-        #print()
-        #print("AFTER:")
-        for vm in vmoves:
-            pass
-            #print(vm.fromFieldX, vm.fromFieldY, vm.toFieldX, vm.toFieldY)
+
+        return returnmoves
 
 
-        return vmoves
+
 
     def isFieldInDanger(self, x, y, hostileCol):
         moves = self.findValidMoves(hostileCol, False)
