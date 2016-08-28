@@ -47,6 +47,7 @@ class Board:
             if f.type == KING:
                 print("Imaginary King:", f.posx, f.posy)
                 if self.isFieldInDanger(f.posx, f.posy, notC):
+                    print("is in danger at this pos!")
                     if c == WHITE:
                         self.isWhiteCheck = True
                     elif c == BLACK:
@@ -93,7 +94,8 @@ class Board:
             if field.figure is not None:
                 if field.figure.col == FRIENDLY:
                     possibleFigures.append(field.figure)
-
+                    if field.figure.type == KING:
+                        print("There is a king that could move (SURPRISE MOTHERFUCKER)")
         # start finding moves
         for f in possibleFigures:
             px = f.posx
@@ -268,50 +270,44 @@ class Board:
 
 
         if topLevel:
+            print("-------")
             for vm in vmoves:
                 imaginary = copy.deepcopy(self)
-                imaginary.fields = copy.deepcopy(self.fields)
 
                 imaginary.getFieldByCords(vm.fromFieldX, vm.fromFieldY).figure = None
                 imaginary.getFieldByCords(vm.toFieldX, vm.toFieldY).figure = vm.friendlyFigure
-
-                for f in self.fields:
-                    fig = f.figure
-                    if fig is not None:
-                        if fig.type == KING:
-                            print("REAL KING:", fig.posx, fig.posy)
-
-                for f in imaginary.fields:
-                    fig = f.figure
-                    if fig is not None:
-                        if fig.type == KING:
-                            print("HALF IMAGINARY KING:", fig.posx, fig.posy, imaginary.getFieldByCords(fig.posx, fig.posy).figure)
+                vm.friendlyFigure.posx = vm.toFieldX
+                vm.friendlyFigure.posy = vm.toFieldY
 
 
-                """
                 if vm.isRochade:
+                    imaginary.getFieldByCords(vm.towerComponentFrom, vm.toFieldY).figure.posx = vm.towerComponentTo
                     imaginary.getFieldByCords(vm.towerComponentTo, vm.toFieldY).figure = imaginary.getFieldByCords(
                         vm.towerComponentFrom, vm.toFieldY).figure
                     imaginary.getFieldByCords(vm.towerComponentFrom, vm.toFieldY).figure = None
-                """
+
 
                 imaginary.checkCheck()
 
-                if FRIENDLY == WHITE and imaginary.isWhiteCheck or FRIENDLY == BLACK and imaginary.isBlackCheck:
+                if imaginary.isCheck(FRIENDLY):
                     continue
                 else:
                     returnmoves.append(vm)
 
+                print("-------")
 
-
+        else:
+            returnmoves = vmoves
         return returnmoves
 
 
 
 
     def isFieldInDanger(self, x, y, hostileCol):
+        print("LOOKING FOR DANGER BY", hostileCol)
         moves = self.findValidMoves(hostileCol, False)
         for move in moves:
+            print("enemy would move", move.toFieldX, move.toFieldY)
             if move.toFieldX == x and move.toFieldY == y:
                 return True
         return False
