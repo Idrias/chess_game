@@ -33,7 +33,9 @@ def collectGarbage():
                 and net.ti() > g.creationtime + MAXBEGINIDLE) or net.ti()-g.lastmovetime > MAXIDLE:
             glist.remove(g) #heavy TODO
             net.sendToAllAll("GAME REMOVED", [str(g.id)])
-            fileops.removeLine("./xml/packlist.chess", str(g.id)+str(":")+str(g.movesmade))
+            fileops.removeLine("./xml/packlist.chess", str(g.id)+str(":")+str(g.movesmade)+"\n")
+            fileops.rmdir("./xml/"+str(g.id))
+            print("Closed down " + str(g.id) + " for inactivity!")
 
 
 setup()
@@ -45,3 +47,7 @@ try:
 except (KeyboardInterrupt, SystemExit):
     print("Exiting now...")
     exit()
+
+
+
+# TODO save ttl in xml

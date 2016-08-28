@@ -6,6 +6,13 @@
 	<sizeX>8</sizeX>
 	<sizeY>8</sizeY>
 	<turn>white</turn>
+	<movesmade>0</movesmade>
+	<password></password>
+	
+	<timeWhite>1800</timeWhite>
+	<timeBlack>1800</timeBlack>
+	<timePerRound>90</timePerRound>
+	
 </meta>
 
 <figures>

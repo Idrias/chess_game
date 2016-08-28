@@ -42,8 +42,9 @@ class Networker {
     
     if (!client.active() && lastState == ACTIVE) {
       lastState = NOTACTIVE; 
-      game.state = SERVERBROWSER;
+      game.state = SERVERBROWSER; 
     }
+    
     if (!client.active()) return;
 
     inCheck();
@@ -58,7 +59,7 @@ class Networker {
     }
     message += "&";
 
-    //println(message);
+
     outMSGS.add(new outMessage(message));
   }
 
@@ -143,7 +144,6 @@ class Networker {
 
 
     if (command.equals("UI UPDATE")) {
-      println(arguments.get(0), arguments.get(1), arguments.get(2));
       if (arguments.get(0).equals("NAME")) {
         if (int(arguments.get(1)) == WHITE) {
           game.board.nameWHITE = arguments.get(2);

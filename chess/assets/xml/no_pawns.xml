@@ -8,19 +8,15 @@
 	<turn>white</turn>
 	<movesmade>0</movesmade>
 	<password></password>
+	
+	<timeWhite>1800</timeWhite>
+	<timeBlack>1800</timeBlack>
+	<timePerRound>90</timePerRound>
+	
 </meta>
 
 <figures>
 	<!-- White -->
-		<!-- Pawns -->
-			<figure color="white" xloc="a" yloc="2" hasMoved="no">Pawn</figure>
-			<figure color="white" xloc="b" yloc="2" hasMoved="no">Pawn</figure>
-			<figure color="white" xloc="c" yloc="2" hasMoved="no">Pawn</figure>
-			<figure color="white" xloc="d" yloc="2" hasMoved="no">Pawn</figure>
-			<figure color="white" xloc="e" yloc="2" hasMoved="no">Pawn</figure>
-			<figure color="white" xloc="f" yloc="2" hasMoved="no">Pawn</figure>
-			<figure color="white" xloc="g" yloc="2" hasMoved="no">Pawn</figure>
-			<figure color="white" xloc="h" yloc="2" hasMoved="no">Pawn</figure>
 			
 		<!-- Towers -->
 			<figure color="white" xloc="a" yloc="1" hasMoved="no">Tower</figure>
@@ -42,14 +38,6 @@
 			
 	<!-- Black -->
 		<!-- Pawns -->
-			<figure color="black" xloc="a" yloc="7" hasMoved="no">Pawn</figure>
-			<figure color="black" xloc="b" yloc="7" hasMoved="no">Pawn</figure>
-			<figure color="black" xloc="c" yloc="7" hasMoved="no">Pawn</figure>
-			<figure color="black" xloc="d" yloc="7" hasMoved="no">Pawn</figure>
-			<figure color="black" xloc="e" yloc="7" hasMoved="no">Pawn</figure>
-			<figure color="black" xloc="f" yloc="7" hasMoved="no">Pawn</figure>
-			<figure color="black" xloc="g" yloc="7" hasMoved="no">Pawn</figure>
-			<figure color="black" xloc="h" yloc="7" hasMoved="no">Pawn</figure>
 			
 		<!-- Towers -->
 			<figure color="black" xloc="a" yloc="8" hasMoved="no">Tower</figure>

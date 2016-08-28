@@ -42,8 +42,9 @@ class Networker {
     
     if (!client.active() && lastState == ACTIVE) {
       lastState = NOTACTIVE; 
-      game.state = SERVERBROWSER;
+      game.state = SERVERBROWSER; 
     }
+    
     if (!client.active()) return;
 
     inCheck();
@@ -58,7 +59,7 @@ class Networker {
     }
     message += "&";
 
-    //println(message);
+
     outMSGS.add(new outMessage(message));
   }
 

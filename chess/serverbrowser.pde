@@ -141,7 +141,8 @@ class Serverbrowser {
 
 
 
-  void draw() { 
+  void draw() {
+    enterName.content = str(millis());
     if (selJoin.state && !selCreate.state) mode = JOIN;
     else if (selCreate.state && !selJoin.state) mode = CREATE;
     else mode = UNDEFINED;
@@ -175,6 +176,7 @@ class Serverbrowser {
       stroke(#FA5103); 
       fill(#FA5103);
       if(glinks.size() != 0) glinks = new ArrayList<GameLink>();
+      lastID = -1;
     }
 
 

@@ -483,6 +483,9 @@ class Field {
     drawY = PApplet.parseInt(startY + pos.y * game.board.DRAW_fieldSizeY);
     
     rect(drawX, drawY, drawX+game.board.DRAW_fieldSizeX, drawY+game.board.DRAW_fieldSizeY);
+    
+    fill(0);
+    text(PApplet.parseInt(pos.x) +" "+ PApplet.parseInt(pos.y), drawX+game.board.DRAW_fieldSizeX / 2, drawY+game.board.DRAW_fieldSizeY-10);
   }
   
   public void draw_figure() {
@@ -515,6 +518,7 @@ class Figure {
     pos = new PVector(i_pos.x, i_pos.y);
     
     String searchref = col == BLACK ? "black " : "white ";
+    
     searchref += figTypeToString(type).toLowerCase();
     image = find_referencedImage(searchref);
     
@@ -526,9 +530,7 @@ class Figure {
     image(image, drawX, drawY);
   }
   
-  
-  
-  public void draw() {}
+ 
 }
 class Game {
   Board board;
@@ -975,8 +977,9 @@ class Networker {
     
     if (!client.active() && lastState == ACTIVE) {
       lastState = NOTACTIVE; 
-      game.state = SERVERBROWSER;
+      game.state = SERVERBROWSER; 
     }
+    
     if (!client.active()) return;
 
     inCheck();
@@ -991,7 +994,7 @@ class Networker {
     }
     message += "&";
 
-    //println(message);
+
     outMSGS.add(new outMessage(message));
   }
 
@@ -1350,7 +1353,8 @@ class Serverbrowser {
 
 
 
-  public void draw() { 
+  public void draw() {
+    enterName.content = str(millis());
     if (selJoin.state && !selCreate.state) mode = JOIN;
     else if (selCreate.state && !selJoin.state) mode = CREATE;
     else mode = UNDEFINED;
@@ -1384,6 +1388,7 @@ class Serverbrowser {
       stroke(0xffFA5103); 
       fill(0xffFA5103);
       if(glinks.size() != 0) glinks = new ArrayList<GameLink>();
+      lastID = -1;
     }
 
 

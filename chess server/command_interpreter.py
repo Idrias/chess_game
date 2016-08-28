@@ -8,9 +8,6 @@ from vars import *
 
 
 def interpret(m):
-    print(m.command)
-    for arg in m.args:
-        print(arg)
 
     if m.command == "MOVEMENT REQUEST":
         movement(m)
@@ -54,7 +51,7 @@ def create_game(m):
     XML.create_xml(xmlPath, m.args[1:])
 
     m = XML.parse_meta(xmlPath)
-    game.whoseturn = WHITE if m["turn"] == "white" else BLACK
+    game.board.whoseTurn = WHITE if m["turn"] == "white" else BLACK
     game.board.xSize = int(m["sizeX"])
     game.board.ySize = int(m["sizeY"])
     game.board.setup_fields()
@@ -66,6 +63,7 @@ def create_game(m):
 
     c.sendmessage("CODE IS", [game.id, CREATIONCOOLDOWN])
     game.sendlistupdate()
+    print("Opened Game:", game.id)
 
 
 def join_game(m): #id pref name pw
@@ -88,16 +86,16 @@ def join_game(m): #id pref name pw
 
     if name == "[EMPTY]":
         name = "Little Hacker"
-    print(name)
+
     if g.playerWHITE is None and g.playerBLACK is None:
         if int(preference) == BLACK:
             g.playerBLACK = Player(nc, name)
             nc.sendmessage("YOU ARE", [BLACK])
-            print("BLACK connected to " + str(g.id))
+            print("BLACK ("+str(m.sender)+") connected to " + str(g.id))
         else:
             g.playerWHITE = Player(nc, name)
             nc.sendmessage("YOU ARE", [WHITE])
-            print("WHITE connected to " + str(g.id))
+            print("WHITE ("+str(m.sender)+") connected to " + str(g.id))
 
     elif g.playerWHITE is None:
         g.playerWHITE = Player(nc, name)
@@ -116,7 +114,7 @@ def join_game(m): #id pref name pw
     for field in g.board.fields:
         if field.figure is not None:
             nc.sendmessage("ADD FIGURE", [field.figure.col, field.figure.type, field.figure.posx, field.figure.posy, field.figure.hasMoved])
-    nc.sendmessage("TURN", [g.whoseturn])
+    nc.sendmessage("TURN", [g.board.whoseTurn])
 
     if g.playerBLACK is not None:
         net.sendToAll(g.id, "UI UPDATE", ["NAME", BLACK, g.playerBLACK.name])
@@ -154,14 +152,19 @@ def movement(m):
     fieldFrom.figure = None
     fieldTo.figure = fig
 
-    g.whoseturn = WHITE if g.whoseturn == BLACK else BLACK
+    g.board.whoseTurn = WHITE if g.board.whoseTurn == BLACK else BLACK
     g.movesmade += 1
     g.lastmovetime = net.ti()
-    net.sendToAll(g.id, "TURN", [g.whoseturn])
-
+    net.sendToAll(g.id, "TURN", [g.board.whoseTurn])
+    # todo check check
     XML.createSave("./xml/"+str(g.id)+"/"+str(g.movesmade)+".xml", g)
     fileops.replaceLine("./xml/packlist.chess", str(g.id)+":"+str(g.movesmade-1), str(g.id)+":"+str(g.movesmade))
 
+    turns = g.board.findValidMoves(g.board.whoseTurn, True)
+
+    for turn in turns:
+        turn.p()
+    print()
 
 
 

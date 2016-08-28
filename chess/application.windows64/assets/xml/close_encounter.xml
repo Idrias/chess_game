@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+
+<board>
+
+<meta>
+	<sizeX>8</sizeX>
+	<sizeY>8</sizeY>
+	<turn>white</turn>
+	<movesmade>0</movesmade>
+	<password></password>
+	
+	<timeWhite>1800</timeWhite>
+	<timeBlack>1800</timeBlack>
+	<timePerRound>90</timePerRound>
+	
+</meta>
+
+<figures>
+	<!-- White -->
+			
+		<!-- Towers -->
+			<figure color="white" xloc="a" yloc="3" hasMoved="no">Tower</figure>
+			<figure color="white" xloc="h" yloc="3" hasMoved="no">Tower</figure>
+		
+		<!-- Horses -->
+			<figure color="white" xloc="b" yloc="3" hasMoved="no">Horse</figure>
+			<figure color="white" xloc="g" yloc="3" hasMoved="no">Horse</figure>
+		
+		<!-- Bishops -->
+			<figure color="white" xloc="c" yloc="3" hasMoved="no">Bishop</figure>
+			<figure color="white" xloc="f" yloc="3" hasMoved="no">Bishop</figure>
+
+		<!-- Royals -->
+			<figure color="white" xloc="d" yloc="3" hasMoved="no">Queen</figure>
+			<figure color="white" xloc="e" yloc="3" hasMoved="no">King</figure>
+			
+			
+			
+	<!-- Black -->
+		<!-- Pawns -->
+			
+		<!-- Towers -->
+			<figure color="black" xloc="a" yloc="6" hasMoved="no">Tower</figure>
+			<figure color="black" xloc="h" yloc="6" hasMoved="no">Tower</figure>
+		
+		<!-- Horses -->
+			<figure color="black" xloc="b" yloc="6" hasMoved="no">Horse</figure>
+			<figure color="black" xloc="g" yloc="6" hasMoved="no">Horse</figure>
+		
+		<!-- Bishops -->
+			<figure color="black" xloc="c" yloc="6" hasMoved="no">Bishop</figure>
+			<figure color="black" xloc="f" yloc="6" hasMoved="no">Bishop</figure>
+
+		<!-- Royals -->
+			<figure color="black" xloc="d" yloc="6" hasMoved="no">Queen</figure>
+			<figure color="black" xloc="e" yloc="6" hasMoved="no">King</figure>
+</figures>
+</board>

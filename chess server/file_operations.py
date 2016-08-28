@@ -63,7 +63,6 @@ def removeLine(path, line):
 
 
 def replaceLine(path, line, replace):
-    print("WE WANT TO REPLACE", line, replace)
     line+="\n"
     replace+="\n"
 
@@ -104,7 +103,7 @@ def loadGames():
             m = XML.parse_meta(xmlPath)
             g.password = m["password"]
 
-            g.whoseturn = WHITE if m["turn"] == "white" else BLACK
+            g.board.whoseTurn = WHITE if m["turn"] == "white" else BLACK
             g.board.xSize = int(m["sizeX"])
             g.board.ySize = int(m["sizeY"])
             g.movesmade = int(m["movesmade"])
@@ -114,12 +113,15 @@ def loadGames():
 
         figures = XML.parse_figures(xmlPath)
         for figure in figures:
-            print(figure.posx, figure.posy)
-            print(g.board.xSize, g.board.ySize)
             g.board.getFieldByCords(figure.posx, figure.posy).figure = figure
 
         if g.password is None:
             g.password = ""
 
-        if g.movesmade > 0:
+        if g.movesmade > 3:
             glist.append(g)
+            print("Loaded Game:", g.id)
+        else:
+            removeLine("./xml/packlist.chess", str(g.id)+":"+str(g.movesmade)+"\n")
+            rmdir("./xml/"+str(g.id))
+            print("Removed SaveGame:", g.id)

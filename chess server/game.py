@@ -14,7 +14,7 @@ class Game:
         self.board = Board()
         self.playerWHITE = None
         self.playerBLACK = None
-        self.whoseturn = WHITE #TODO
+        self.board.whoseTurn = WHITE #TODO
         self.xmlPath = ""
         self.password = ""
         self.creationtime = net.ti()
@@ -29,13 +29,13 @@ class Game:
             for game in glist:
                 if self.id == game.id:
                     flag = True
-                    # Todo implement alle games voll
+                    # Todo implement alle games voll / implement Remis bei wiederholung
             if flag:
                 flag = False
             else:
                 break
 
-        print("Opened Game:", self.id)
+
 
     def sendlistupdate(self):
         whiteName = "None" if self.playerWHITE is None else self.playerWHITE.name

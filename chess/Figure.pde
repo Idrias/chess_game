@@ -13,6 +13,7 @@ class Figure {
     pos = new PVector(i_pos.x, i_pos.y);
     
     String searchref = col == BLACK ? "black " : "white ";
+    
     searchref += figTypeToString(type).toLowerCase();
     image = find_referencedImage(searchref);
     
@@ -24,7 +25,5 @@ class Figure {
     image(image, drawX, drawY);
   }
   
-  
-  
-  void draw() {}
+ 
 }

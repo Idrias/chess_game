@@ -19,7 +19,6 @@ def parse_figures(path):
         figure.posy = 8-int(xmlFigure.attrib["yloc"])
         figure.type = stringtofigure[xmlFigure.text]
         figures.append(figure)
-        print("+", figure.type, figure.posx, figure.posy)
 
     return figures
 
@@ -59,7 +58,7 @@ def createSave(path, g):
     sizeY.text = str(8)
 
     turn = ET.SubElement(meta, "turn")
-    turn.text = "white" if g.whoseturn == WHITE else "black"
+    turn.text = "white" if g.board.whoseTurn == WHITE else "black"
 
     turnspassed = ET.SubElement(meta, "movesmade")
     turnspassed.text = str(g.movesmade)

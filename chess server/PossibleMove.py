@@ -1,3 +1,5 @@
+from vars import *
+
 class PossibleMove:
     def __init__(self, p_actorColor, p_fromFieldX, p_fromFieldY, p_toFieldX, p_toFieldY, p_friendlyFigure, p_slainFigure):
         self.actorColor = p_actorColor
@@ -12,4 +14,8 @@ class PossibleMove:
         self.towerComponentFrom = None
         self.towerComponentTo = None
 
-# Future
+    def p(self):
+        if self.actorColor == WHITE:
+            print("WHITE " + str(self.fromFieldX), str(self.fromFieldY), " - ", str(self.toFieldX), str(self.toFieldY))
+        else:
+            print("BLACK " + str(self.fromFieldX), str(self.fromFieldY), " - ", str(self.toFieldX), str(self.toFieldY))

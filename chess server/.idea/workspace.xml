@@ -2,28 +2,46 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3e5a494d-7850-4abc-9ed1-8c4d3713e922" name="Default" comment="Alpha 1.0.2">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/PossibleMove.py" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/xml/8273/0.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/xml/8273/1.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/xml/8273/2.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/xml/8273/3.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/xml/8273/4.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/xml/8273/5.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/xml/8273/6.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/xml/8273/7.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/xml/packlist.chess" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows32/chess.exe" afterPath="$PROJECT_DIR$/../chess/application.windows32/chess.exe" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows32/lib/chess.jar" afterPath="$PROJECT_DIR$/../chess/application.windows32/lib/chess.jar" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows64/chess.exe" afterPath="$PROJECT_DIR$/../chess/application.windows64/chess.exe" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows64/lib/chess.jar" afterPath="$PROJECT_DIR$/../chess/application.windows64/lib/chess.jar" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Board.py" afterPath="$PROJECT_DIR$/Board.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PossibleMove.py" afterPath="$PROJECT_DIR$/PossibleMove.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XML.py" afterPath="$PROJECT_DIR$/XML.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/chess.py" afterPath="$PROJECT_DIR$/chess.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/command_interpreter.py" afterPath="$PROJECT_DIR$/command_interpreter.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/file_operations.py" afterPath="$PROJECT_DIR$/file_operations.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/player.py" afterPath="$PROJECT_DIR$/player.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/game.py" afterPath="$PROJECT_DIR$/game.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/vars.py" afterPath="$PROJECT_DIR$/vars.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/Field.pde" afterPath="$PROJECT_DIR$/../chess/Field.pde" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/Figure.pde" afterPath="$PROJECT_DIR$/../chess/Figure.pde" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows32/source/Field.pde" afterPath="$PROJECT_DIR$/../chess/application.windows32/source/Field.pde" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows32/source/Figure.pde" afterPath="$PROJECT_DIR$/../chess/application.windows32/source/Figure.pde" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows32/source/chess.java" afterPath="$PROJECT_DIR$/../chess/application.windows32/source/chess.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows32/source/input_handler.pde" afterPath="$PROJECT_DIR$/../chess/application.windows32/source/input_handler.pde" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows32/source/netorking.pde" afterPath="$PROJECT_DIR$/../chess/application.windows32/source/netorking.pde" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows32/source/serverbrowser.pde" afterPath="$PROJECT_DIR$/../chess/application.windows32/source/serverbrowser.pde" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows64/assets/xml/default_board.xml" afterPath="$PROJECT_DIR$/../chess/application.windows64/assets/xml/default_board.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows64/assets/xml/queen_mayhem.xml" afterPath="$PROJECT_DIR$/../chess/application.windows64/assets/xml/queen_mayhem.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows64/source/Field.pde" afterPath="$PROJECT_DIR$/../chess/application.windows64/source/Field.pde" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows64/source/Figure.pde" afterPath="$PROJECT_DIR$/../chess/application.windows64/source/Figure.pde" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows64/source/chess.java" afterPath="$PROJECT_DIR$/../chess/application.windows64/source/chess.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows64/source/input_handler.pde" afterPath="$PROJECT_DIR$/../chess/application.windows64/source/input_handler.pde" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows64/source/netorking.pde" afterPath="$PROJECT_DIR$/../chess/application.windows64/source/netorking.pde" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/application.windows64/source/serverbrowser.pde" afterPath="$PROJECT_DIR$/../chess/application.windows64/source/serverbrowser.pde" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/assets/xml/default_board.xml" afterPath="$PROJECT_DIR$/../chess/assets/xml/default_board.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/assets/xml/queen_mayhem.xml" afterPath="$PROJECT_DIR$/../chess/assets/xml/queen_mayhem.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/netorking.pde" afterPath="$PROJECT_DIR$/../chess/netorking.pde" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../chess/serverbrowser.pde" afterPath="$PROJECT_DIR$/../chess/serverbrowser.pde" />
     </list>
     <ignored path="chess server.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -39,24 +57,14 @@
     <option name="PATCH_PATH" value="" />
   </component>
   <component name="DockManager">
-    <window id="2">
+    <window id="1">
       <content type="file-editors">
         <state>
           <leaf>
-            <file leaf-file-name="PossibleMove.py" pinned="false" current-in-tab="true">
-              <entry file="file://$PROJECT_DIR$/PossibleMove.py">
-                <provider selected="true" editor-type-id="text-editor">
-                  <state vertical-scroll-proportion="0.2556391">
-                    <caret line="14" column="8" selection-start-line="14" selection-start-column="8" selection-end-line="14" selection-end-column="8" />
-                    <folding />
-                  </state>
-                </provider>
-              </entry>
-            </file>
-            <file leaf-file-name="Figure.py" pinned="false" current-in-tab="false">
+            <file leaf-file-name="Figure.py" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/Figure.py">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state vertical-scroll-proportion="0.0">
+                  <state vertical-scroll-proportion="0.21935484">
                     <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
                     <folding />
                   </state>
@@ -78,7 +86,7 @@
         <entry file="file://$PROJECT_DIR$/chess.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="19" column="35" selection-start-line="19" selection-start-column="35" selection-end-line="19" selection-end-column="35" />
+              <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -90,7 +98,7 @@
         <entry file="file://$PROJECT_DIR$/command_interpreter.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="120" column="33" selection-start-line="120" selection-start-column="33" selection-end-line="120" selection-end-column="33" />
+              <caret line="165" column="11" selection-start-line="165" selection-start-column="11" selection-end-line="165" selection-end-column="11" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -102,7 +110,7 @@
         <entry file="file://$PROJECT_DIR$/file_operations.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="99" column="26" selection-start-line="99" selection-start-column="26" selection-end-line="99" selection-end-column="26" />
+              <caret line="124" column="49" selection-start-line="124" selection-start-column="49" selection-end-line="124" selection-end-column="49" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -114,7 +122,7 @@
         <entry file="file://$PROJECT_DIR$/game.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="48" column="20" selection-start-line="48" selection-start-column="20" selection-end-line="48" selection-end-column="20" />
+              <caret line="42" column="65" selection-start-line="42" selection-start-column="65" selection-end-line="42" selection-end-column="65" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
@@ -125,10 +133,20 @@
       <file leaf-file-name="Board.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Board.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5286416">
-              <caret line="19" column="43" selection-start-line="19" selection-start-column="43" selection-end-line="19" selection-end-column="43" />
+            <state vertical-scroll-proportion="0.893401">
+              <caret line="283" column="11" selection-start-line="283" selection-start-column="11" selection-end-line="283" selection-end-column="11" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
+                <element signature="e#528#654#0" expanded="false" />
+                <element signature="e#1778#1959#0" expanded="false" />
+                <element signature="e#1994#2148#0" expanded="false" />
+                <element signature="e#2183#2369#0" expanded="false" />
+                <element signature="e#2405#2445#0" expanded="false" />
+                <marker date="1472389242682" expanded="false" signature="2812:4104" placeholder="..." />
+                <marker date="1472389242682" expanded="false" signature="4167:5537" placeholder="..." />
+                <marker date="1472389242682" expanded="false" signature="5571:6714" placeholder="..." />
+                <marker date="1472389242682" expanded="false" signature="6750:7972" placeholder="..." />
+                <marker date="1472389242682" expanded="true" signature="8006:10775" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -138,7 +156,7 @@
         <entry file="file://$PROJECT_DIR$/XML.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="83" column="98" selection-start-line="83" selection-start-column="98" selection-end-line="83" selection-end-column="98" />
+              <caret line="30" column="37" selection-start-line="30" selection-start-column="37" selection-end-line="30" selection-end-column="37" />
               <folding>
                 <element signature="e#0#34#0" expanded="true" />
               </folding>
@@ -150,7 +168,27 @@
         <entry file="file://$PROJECT_DIR$/vars.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
+              <caret line="2" column="9" selection-start-line="2" selection-start-column="9" selection-end-line="2" selection-end-column="9" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ElementTree.py" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python35-32/Lib/xml/etree/ElementTree.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="1181" column="0" selection-start-line="1181" selection-start-column="0" selection-end-line="1181" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PossibleMove.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/PossibleMove.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-8.793103">
+              <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -168,6 +206,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Board.py" root0="SKIP_INSPECTION" />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
@@ -183,16 +224,18 @@
         <option value="$PROJECT_DIR$/figure.py" />
         <option value="$PROJECT_DIR$/networking.py" />
         <option value="$PROJECT_DIR$/player.py" />
+        <option value="$PROJECT_DIR$/xml/PossibleMove.py" />
+        <option value="$PROJECT_DIR$/XML.py" />
+        <option value="$PROJECT_DIR$/file_operations.py" />
         <option value="$PROJECT_DIR$/xml/packlist.chess" />
+        <option value="$PROJECT_DIR$/vars.py" />
         <option value="$PROJECT_DIR$/chess.py" />
         <option value="$PROJECT_DIR$/game.py" />
-        <option value="$PROJECT_DIR$/file_operations.py" />
-        <option value="$PROJECT_DIR$/XML.py" />
-        <option value="$PROJECT_DIR$/command_interpreter.py" />
-        <option value="$PROJECT_DIR$/vars.py" />
-        <option value="$PROJECT_DIR$/xml/PossibleMove.py" />
-        <option value="$PROJECT_DIR$/Board.py" />
+        <option value="$PROJECT_DIR$/xml/ImaginaryBoard.py" />
+        <option value="$PROJECT_DIR$/ImaginaryBoard.py" />
         <option value="$PROJECT_DIR$/PossibleMove.py" />
+        <option value="$PROJECT_DIR$/command_interpreter.py" />
+        <option value="$PROJECT_DIR$/Board.py" />
       </list>
     </option>
   </component>
@@ -227,6 +270,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -245,24 +289,9 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="chess server" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="chess server" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="xml" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
       <pane id="Scratches" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -520,14 +549,15 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13802083" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13802083" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33296943" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3245243" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32972974" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3245243" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31501058" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32875264" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -539,7 +569,6 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3245243" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -566,16 +595,23 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="4" />
+      <option name="time" value="7" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/PossibleMove.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/player.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -583,7 +619,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -601,7 +636,19 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="16" column="36" selection-start-line="16" selection-start-column="36" selection-end-line="16" selection-end-column="36" />
-          <folding />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+            <element signature="e#528#654#0" expanded="false" />
+            <element signature="e#1778#1959#0" expanded="false" />
+            <element signature="e#1994#2148#0" expanded="false" />
+            <element signature="e#2183#2369#0" expanded="false" />
+            <element signature="e#2405#2445#0" expanded="false" />
+            <marker date="1472389242682" expanded="false" signature="2812:4104" placeholder="..." />
+            <marker date="1472389242682" expanded="false" signature="4167:5537" placeholder="..." />
+            <marker date="1472389242682" expanded="false" signature="5571:6714" placeholder="..." />
+            <marker date="1472389242682" expanded="false" signature="6750:7972" placeholder="..." />
+            <marker date="1472389242682" expanded="true" signature="8006:10775" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -662,7 +709,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -670,7 +716,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="20" column="24" selection-start-line="20" selection-start-column="24" selection-end-line="20" selection-end-column="24" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -688,7 +733,19 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="16" column="36" selection-start-line="16" selection-start-column="36" selection-end-line="16" selection-end-column="36" />
-          <folding />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+            <element signature="e#528#654#0" expanded="false" />
+            <element signature="e#1778#1959#0" expanded="false" />
+            <element signature="e#1994#2148#0" expanded="false" />
+            <element signature="e#2183#2369#0" expanded="false" />
+            <element signature="e#2405#2445#0" expanded="false" />
+            <marker date="1472389242682" expanded="false" signature="2812:4104" placeholder="..." />
+            <marker date="1472389242682" expanded="false" signature="4167:5537" placeholder="..." />
+            <marker date="1472389242682" expanded="false" signature="5571:6714" placeholder="..." />
+            <marker date="1472389242682" expanded="false" signature="6750:7972" placeholder="..." />
+            <marker date="1472389242682" expanded="true" signature="8006:10775" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -749,7 +806,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="8" column="8" selection-start-line="8" selection-start-column="8" selection-end-line="8" selection-end-column="8" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -827,7 +883,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="8" column="8" selection-start-line="8" selection-start-column="8" selection-end-line="8" selection-end-column="8" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -885,7 +940,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="5" column="11" selection-start-line="5" selection-start-column="11" selection-end-line="5" selection-end-column="11" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -893,44 +947,33 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.16666667">
           <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python35-32/Lib/xml/etree/ElementTree.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33224222">
-          <caret line="1062" column="0" selection-start-line="1062" selection-start-column="0" selection-end-line="1062" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/XML.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="83" column="98" selection-start-line="83" selection-start-column="98" selection-end-line="83" selection-end-column="98" />
+          <caret line="30" column="37" selection-start-line="30" selection-start-column="37" selection-end-line="30" selection-end-column="37" />
           <folding>
             <element signature="e#0#34#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/command_interpreter.py">
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python35-32/Lib/xml/etree/ElementTree.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="120" column="33" selection-start-line="120" selection-start-column="33" selection-end-line="120" selection-end-column="33" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
+          <caret line="1181" column="0" selection-start-line="1181" selection-start-column="0" selection-end-line="1181" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/game.py">
+    <entry file="file://$PROJECT_DIR$/chess.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="48" column="20" selection-start-line="48" selection-start-column="20" selection-end-line="48" selection-end-column="20" />
+          <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
           <folding>
-            <element signature="e#0#26#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -938,34 +981,14 @@
     <entry file="file://$PROJECT_DIR$/vars.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
+          <caret line="2" column="9" selection-start-line="2" selection-start-column="9" selection-end-line="2" selection-end-column="9" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/file_operations.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="99" column="26" selection-start-line="99" selection-start-column="26" selection-end-line="99" selection-end-column="26" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/chess.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="19" column="35" selection-start-line="19" selection-start-column="35" selection-end-line="19" selection-end-column="35" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Figure.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.21935484">
           <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
           <folding />
         </state>
@@ -973,18 +996,58 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/PossibleMove.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2556391">
-          <caret line="14" column="8" selection-start-line="14" selection-start-column="8" selection-end-line="14" selection-end-column="8" />
+        <state vertical-scroll-proportion="-8.793103">
+          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="42" column="65" selection-start-line="42" selection-start-column="65" selection-end-line="42" selection-end-column="65" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/command_interpreter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="165" column="11" selection-start-line="165" selection-start-column="11" selection-end-line="165" selection-end-column="11" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/file_operations.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="124" column="49" selection-start-line="124" selection-start-column="49" selection-end-line="124" selection-end-column="49" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Board.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5286416">
-          <caret line="19" column="43" selection-start-line="19" selection-start-column="43" selection-end-line="19" selection-end-column="43" />
+        <state vertical-scroll-proportion="0.893401">
+          <caret line="283" column="11" selection-start-line="283" selection-start-column="11" selection-end-line="283" selection-end-column="11" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
+            <element signature="e#528#654#0" expanded="false" />
+            <element signature="e#1778#1959#0" expanded="false" />
+            <element signature="e#1994#2148#0" expanded="false" />
+            <element signature="e#2183#2369#0" expanded="false" />
+            <element signature="e#2405#2445#0" expanded="false" />
+            <marker date="1472389242682" expanded="false" signature="2812:4104" placeholder="..." />
+            <marker date="1472389242682" expanded="false" signature="4167:5537" placeholder="..." />
+            <marker date="1472389242682" expanded="false" signature="5571:6714" placeholder="..." />
+            <marker date="1472389242682" expanded="false" signature="6750:7972" placeholder="..." />
+            <marker date="1472389242682" expanded="true" signature="8006:10775" placeholder="..." />
           </folding>
         </state>
       </provider>

@@ -30,6 +30,9 @@ class Field {
     drawY = int(startY + pos.y * game.board.DRAW_fieldSizeY);
     
     rect(drawX, drawY, drawX+game.board.DRAW_fieldSizeX, drawY+game.board.DRAW_fieldSizeY);
+    
+    fill(0);
+    text(int(pos.x) +" "+ int(pos.y), drawX+game.board.DRAW_fieldSizeX / 2, drawY+game.board.DRAW_fieldSizeY-10);
   }
   
   void draw_figure() {
