@@ -101,8 +101,11 @@ class Networker {
       // WE GOT ACCEPTED!
       if (int(arguments.get(0))==WHITE) thisPlayerFaction = WHITE;
       else if (int(arguments.get(0))==BLACK) thisPlayerFaction = BLACK;
-
+      
+      
       game.board = new Board();
+      game.board.gID = int(arguments.get(1));
+      
       game.state = CONNECTED;
     }
 
@@ -119,11 +122,19 @@ class Networker {
 
     if (command.equals("TURN")) {
       game.board.whoseTurn = int(arguments.get(0));
+      game.board.pmoves = new ArrayList<PossibleMove>();
+      
+      addMessage("LIST MOVES", new String[]{});
     }
     
     if (command.equals("CODE IS")) {
       browser.lastID = int(arguments.get(0));
       browser.nextCreationPossibility = millis() + int(arguments.get(1))*1000;
+      
+      for(GameLink glink : browser.glinks) {
+        glink.selected = false;
+        if(glink.id == browser.lastID) glink.selected = true;
+      }
     }
     
     if (command.equals("GAME")) {
@@ -170,6 +181,23 @@ class Networker {
           i=0;
         }
       }
+    }
+    
+    
+    if(command.equals("POSSIBLE MOVE")) {
+      println(command, arguments.get(0), arguments.get(1), arguments.get(2), arguments.get(3));
+      game.board.pmoves.add(new PossibleMove(int(arguments.get(0)), int(arguments.get(1)), int(arguments.get(2)), int(arguments.get(3))));
+    }
+    
+    
+    if(command.equals("CHECK MATE")) {
+      game.board.isCheckMate = true;
+      game.board.winner = int(arguments.get(0)) == WHITE? "WHITE" : "BLACK";
+    }
+    
+    if(command.equals("SWITCH PAWN")) {
+      game.board.changePawn = true;
+      game.board.changePawnPos = new PVector(float(arguments.get(0)), float(arguments.get(1)));
     }
   }
 

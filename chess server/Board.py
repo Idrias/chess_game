@@ -2,6 +2,7 @@ from Field import *
 from vars import *
 from PossibleMove import *
 import copy
+import networking as net
 
 
 class Board:
@@ -11,6 +12,9 @@ class Board:
         self.whoseTurn = 1337
         self.isWhiteCheck = False
         self.isBlackCheck = False  # TODO check on load
+
+        self.whiteMoves = []
+        self.blackMoves = []
 
         self.fields = []
 
@@ -45,9 +49,9 @@ class Board:
             notC = WHITE if f.col == BLACK else BLACK
 
             if f.type == KING:
-                print("Imaginary King:", f.posx, f.posy)
+                #print("Imaginary King:", f.posx, f.posy)
                 if self.isFieldInDanger(f.posx, f.posy, notC):
-                    print("is in danger at this pos!")
+                    #print("is in danger at this pos!")
                     if c == WHITE:
                         self.isWhiteCheck = True
                     elif c == BLACK:
@@ -95,13 +99,14 @@ class Board:
                 if field.figure.col == FRIENDLY:
                     possibleFigures.append(field.figure)
                     if field.figure.type == KING:
-                        print("There is a king that could move (SURPRISE MOTHERFUCKER)")
+                        #print("There is a king that could move (SURPRISE MOTHERFUCKER)")
+                        pass
         # start finding moves
         for f in possibleFigures:
             px = f.posx
             py = f.posy
 
-            if f.type == PAWN or f.type == QUEEN:
+            if f.type == PAWN:
 
                 if FRIENDLY == WHITE:
 
@@ -183,7 +188,7 @@ class Board:
                 if v(px + 1, py + 2):
                     vmoves.append(PossibleMove(FRIENDLY, px, py, px + 1, py + 2, f, gf(px + 1, py + 2)))
 
-            if f.type == BISHOP:
+            if f.type == BISHOP or f.type == QUEEN:
                 i = 1
                 while True:
                     if v(px + i, py + i):
@@ -238,7 +243,7 @@ class Board:
                     vmoves.append(PossibleMove(FRIENDLY, px, py, px - 1, py - 1, f, gf(px - 1, py - 1)))
 
 
-                """
+
                 for t in possibleFigures:
                     if t.type == TOWER:
                         if not f.hasMoved and not t.hasMoved and topLevel:
@@ -248,7 +253,7 @@ class Board:
                                         if not self.isFieldInDanger(px - 2, py, HOSTILE) and e(px - 2, py):
                                             if e(px - 3, py):
                                                 vmoves.append(PossibleMove(FRIENDLY, px, py, px - 2, py, f, None))
-                                                print(px - 2, py)
+                                                #print(px - 2, py)
                                                 vmoves[-1].isRochade = True
                                                 vmoves[-1].towerComponentFrom = px - 4
                                                 vmoves[-1].towerComponentTo = px - 1
@@ -256,12 +261,12 @@ class Board:
                                     if not self.isFieldInDanger(px + 1, py, HOSTILE) and e(px + 1, py):
                                         if not self.isFieldInDanger(px + 2, py, HOSTILE) and e(px + 2, py):
                                             vmoves.append(PossibleMove(FRIENDLY, px, py, px + 2, py, f, None))
-                                            print(px + 2, py)
+                                            #print(px + 2, py)
                                             vmoves[-1].isRochade = True
                                             vmoves[-1].towerComponentFrom = px + 3
                                             vmoves[-1].towerComponentTo = px + 1
 
-                """
+
         # end finding moves
 
 
@@ -270,9 +275,25 @@ class Board:
 
 
         if topLevel:
-            print("-------")
+            x = net.ti()
+            #print("-------")
+            i = 0
             for vm in vmoves:
+                i += 1
+                print("NOW AT", i, net.ti()-x)
+
+
+                imaginary = Board()
+                imaginary.xSize = self.xSize
+                imaginary.ySize = self.ySize
+                imaginary.fields = copy.deepcopy(self.fields)
+
+
+                """
                 imaginary = copy.deepcopy(self)
+                """
+
+
 
                 imaginary.getFieldByCords(vm.fromFieldX, vm.fromFieldY).figure = None
                 imaginary.getFieldByCords(vm.toFieldX, vm.toFieldY).figure = vm.friendlyFigure
@@ -287,27 +308,47 @@ class Board:
                     imaginary.getFieldByCords(vm.towerComponentFrom, vm.toFieldY).figure = None
 
 
+                b = net.ti()
                 imaginary.checkCheck()
+
 
                 if imaginary.isCheck(FRIENDLY):
                     continue
                 else:
                     returnmoves.append(vm)
 
-                print("-------")
+
+                print("---")
+            print("TOPLEVEL TOOK", net.ti() - x)
+            print("-----------------")
+            print()
+            print()
 
         else:
             returnmoves = vmoves
         return returnmoves
 
-
-
-
     def isFieldInDanger(self, x, y, hostileCol):
-        print("LOOKING FOR DANGER BY", hostileCol)
+        #print("LOOKING FOR DANGER BY", hostileCol)
         moves = self.findValidMoves(hostileCol, False)
         for move in moves:
-            print("enemy would move", move.toFieldX, move.toFieldY)
+            #print("enemy would move", move.toFieldX, move.toFieldY)
             if move.toFieldX == x and move.toFieldY == y:
                 return True
         return False
+
+    def postMoveUpdate(self):
+        a = net.ti()
+        self.checkCheck()
+        b = net.ti()
+        print("Checked check:", b-a)
+
+
+        if self.whoseTurn == WHITE:
+            self.whiteMoves = self.findValidMoves(WHITE, True)
+            print("Got white moves:", net.ti() - b)
+
+        else:
+            self.blackMoves = self.findValidMoves(BLACK, True)
+            print("Got black moves:", net.ti() - b)
+

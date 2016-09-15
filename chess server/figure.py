@@ -6,3 +6,4 @@ class Figure:
         self.posx = None
         self.posy = None
 
+        self.lastRoundDoubleStepPawn = False

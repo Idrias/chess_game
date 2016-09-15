@@ -1,4 +1,4 @@
-class Game {
+ class Game {
   Board board;
   int state;
   

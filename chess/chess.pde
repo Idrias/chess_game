@@ -2,7 +2,7 @@ import java.util.Arrays;
 
 void setup() {
   size(1000, 690); 
-  frameRate(144);
+  frameRate(60);
   init_vars();
   rectMode(CORNERS);
   imageMode(CENTER);

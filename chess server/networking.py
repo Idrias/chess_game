@@ -96,6 +96,9 @@ def welcome():
     while True:
         c, addr = s.accept()
         ncs.append(NetClient(c, addr))
+
+        print("Incoming Traveller from", str(addr) + "!")
+
         rcv_thread = threading.Thread(target=rcv)
         rcv_thread.start()
 
@@ -149,11 +152,11 @@ def dcFromGame(c):
     g = game.findGameByID(c.linkedID)
 
     if g is not None:
-        if g.playerWHITE is not None and g.playerWHITE.client == c:
+        if g.getPlayercol(c) == WHITE:
             g.playerWHITE = None
             sendToAll(g.id, "UI UPDATE", ["NAME", WHITE, "[EMPTY]"])
             print("WHITE disconnected from " + str(g.id))
-        elif g.playerBLACK is not None and g.playerBLACK.client == c:
+        elif g.getPlayercol(c) == BLACK:
             g.playerBLACK = None
             sendToAll(g.id, "UI UPDATE", ["NAME", BLACK, "[EMPTY]"])
             print("BLACK disconnected from " + str(g.id))

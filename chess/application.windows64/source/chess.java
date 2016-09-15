@@ -21,7 +21,7 @@ public class chess extends PApplet {
 
 public void setup() {
    
-  frameRate(144);
+  frameRate(60);
   init_vars();
   rectMode(CORNERS);
   imageMode(CENTER);
@@ -35,33 +35,40 @@ public void draw() {
   game.draw();
 }
 class Board {
-
+  
+  boolean isAFigurePicked = false;
+  boolean isCheckMate = false;
+  
+  boolean changePawn = false;
+  PVector changePawnPos;
+  
   int xSize = 8;
   int ySize = 8;
   int DRAW_spaceX = 570;
   int DRAW_spaceY = 570;
   int DRAW_beginX = 60;
   int DRAW_beginY = 60;
+  int DRAW_endX, DRAW_endY;
   int whoseTurn = 0;
+  int gID = 42;
+
+  
+  float DRAW_fieldSizeX;
+  float DRAW_fieldSizeY;
   
   String nameWHITE = "";
   String nameBLACK = "";
+  String winner = "";
 
-  // other
-  boolean isAFigurePicked = false;
-
+  
   Field[][] fields;
+  ArrayList<PossibleMove> pmoves;
+  ArrayList<Button> pawnButtons;
+  
   PImage background;
 
-  int DRAW_endX, DRAW_endY;
-  float DRAW_fieldSizeX;
-  float DRAW_fieldSizeY;
-
+  
   Board() {
-    //int[] metaData = parser.parseMeta(xmlLocation);
-    //xSize = metaData[0];
-    //ySize = metaData[1];
-    //whoseTurn = metaData[2];
     DRAW_endX = DRAW_beginX + DRAW_spaceX;
     DRAW_endY = DRAW_beginY + DRAW_spaceY;
     DRAW_fieldSizeX = (DRAW_endX - DRAW_beginX) / xSize;
@@ -69,7 +76,6 @@ class Board {
 
     fields = new Field[xSize][ySize];
     int col = WHITE;
-    
     
     for (int y = 0; y < ySize; y++) {
       for (int x = 0; x < xSize; x++) {
@@ -82,18 +88,32 @@ class Board {
     }
 
     background = find_referencedImage("wooden background");
+    pmoves = new ArrayList<PossibleMove>();
     
+    pawnButtons = new ArrayList<Button>();
+    pawnButtons.add( new Button(new PVector(730, 292), new PVector(70, 35), color(0xffDDFF1F), color(0xffEDFF7C), "Queen", true) );
+    pawnButtons.add( new Button(new PVector(807, 292), new PVector(70, 35), color(0xffDDFF1F), color(0xffEDFF7C), "Tower", true) );
+    pawnButtons.add( new Button(new PVector(884, 292), new PVector(70, 35), color(0xffDDFF1F), color(0xffEDFF7C), "Bishop", true) );
+    pawnButtons.add( new Button(new PVector(960, 292), new PVector(70, 35), color(0xffDDFF1F), color(0xffEDFF7C), "Horse", true) );
 
-  }
+}
 
 
   public void draw() {
+    
+    
     strokeWeight(2);
  
     
     // Draw background
+    
     image(background, width/2, height/2);
+    if (whoseTurn == thisPlayerFaction) {if(whoseTurn==WHITE) background(255); else background(0);}
 
+    fill(255);
+    textSize(15);
+    text("Exchange Pawn for:", 845, 258);
+    
     // Draw board
     for (int y = 0; y < ySize; y++) {
       for (int x = 0; x < xSize; x++) {
@@ -125,8 +145,13 @@ class Board {
     
     // Draw INFO
     fill(WHITE);
-    text("Game ID: " + "42", 845, 16);
+    text("Game ID: " + str(gID), 845, 16);
     textSize(12);
+    
+    // Draw Buttons
+    if (changePawn) {
+      for(Button b : pawnButtons) b.draw();
+    }
     
     // Draw figures
     for (int y = 0; y < ySize; y++) {
@@ -134,12 +159,50 @@ class Board {
         fields[x][y].draw_figure();
       }
     }
+    
+    
+    // Draw GUI
+    textSize(18);
+    text("WHITE:", 743, 93);
+    text("BLACK", 946, 93);
+    text("01:10", 738, 137);
+    text("01:10", 947, 137);
+    text("01:10", 737, 198);
+    text("01:10", 949, 197);
+    text("TURNTIMER", 842, 137);
+    text("MATCHTIMER", 844, 198);
+    textSize(12);
+    ///
+    
+    if (isCheckMate) {
+      textSize(70);
+      fill(255, 0, 0);
+      text("CHECKMATE", 345, height/2-44);
+      textSize(20);
+      text(winner + "  wins.", 340, height/2+12);
+      textSize(12);
+    
+    }
   }
 
-
+  public void setAllFields(int state) {
+    for (int y = 0; y < ySize; y++) {
+      for (int x = 0; x < xSize; x++) {
+        fields[x][y].highlightCode = state;
+        }
+     }
+  }
+  
+  
   public void checkclick() {
+    
+    if( changePawn ) {
+       setAllFields(NOT_HIGHLIGHTED);
+       game.board.fields[PApplet.parseInt(changePawnPos.x)][PApplet.parseInt(changePawnPos.y)].highlightCode = FRIENDLY_PICKED;
+    }
+    
     // DEV
-      if(whoseTurn != thisPlayerFaction) return;
+      if(whoseTurn != thisPlayerFaction || changePawn) return;
     // DEV
     
     for (int y = 0; y < ySize; y++) {
@@ -155,6 +218,7 @@ class Board {
               f.figure.picked = true;
 
               calculateMoves(x, y);
+              
             } else if (f.highlightCode == FRIENDLY_PICKED) {
               isAFigurePicked = false;
               f.figure.picked = false;
@@ -182,11 +246,7 @@ class Board {
             net.addMessage("MOVEMENT REQUEST", new String[]{""+originField.pos.x, ""+originField.pos.y, ""+x, ""+y});
             originField.figure.picked = false;
             isAFigurePicked = false; // TODO change
-              for (int yII = 0; yII < ySize; yII++) {
-                for (int xII = 0; xII < xSize; xII++) {
-                  fields[xII][yII].highlightCode = NOT_HIGHLIGHTED;
-                }
-              }
+            setAllFields(NOT_HIGHLIGHTED);
           }
           
         }
@@ -210,247 +270,22 @@ class Board {
     if (f != null && f.faction == HOSTILE) return true;
     return false;
   }
-
-
-
-public void calculateMoves(int xout, int yout) {
-  Figure f = game.board.fields[xout][yout].figure;
-  // TODO IMPLEMENT BAUERNTAUSCH
-  // TODO BAUER DARF (NUR) \u00dcBER KREUZ SCHLAGEN
-  // TODO IMPLEMENT ROCHADE
-  // TODO IMPLEMENT EN PASSANT
-  switch(f.type) {
-  case PAWN: 
-    // Bewegung
-    if (f.col == WHITE && yout - 1 > 0 && !isFriendly(xout, yout-1) && !isHostile(xout, yout-1)) fields[xout][yout-1].highlightCode = CAN_GO;
-    if (f.col == WHITE && yout - 2 > 0 && !isFriendly(xout, yout-2) && !isFriendly(xout, yout-1) && !isHostile(xout, yout-1) && !isHostile(xout, yout-2) && !f.hasMoved) fields[xout][yout-2].highlightCode = CAN_GO;
-    if (f.col == BLACK && yout + 1 < ySize && !isFriendly(xout, yout+1) && !isHostile(xout, yout+1)) fields[xout][yout+1].highlightCode = CAN_GO;
-    if (f.col == BLACK && yout + 2 < ySize && !isFriendly(xout, yout+2) && !isFriendly(xout, yout+1) && !isHostile(xout, yout+1) && !isHostile(xout, yout+2) &&!f.hasMoved) fields[xout][yout+2].highlightCode = CAN_GO;
+  
+  
+  
+  public void calculateMoves(int x, int y) {
+    for(PossibleMove p : pmoves) {
+      if(p.fromX == x && p.fromY == y)
+        fields[p.toX][p.toY].highlightCode = CAN_GO;
+    } 
     
-    // Schlagen "\u00fcber Kreuz"
-    if (f.col == WHITE && yout - 1 > -1 && xout - 1 > -1 && isHostile(xout-1, yout-1)) fields[xout-1][yout-1].highlightCode = CAN_GO;
-    if (f.col == WHITE && yout - 1 > -1 && xout + 1 < xSize && isHostile(xout+1, yout-1)) fields[xout+1][yout-1].highlightCode = CAN_GO;
-    
-    if (f.col == BLACK && yout + 1 < ySize && xout - 1 > -1 && isHostile(xout-1, yout+1)) fields[xout-1][yout+1].highlightCode = CAN_GO;
-    if (f.col == BLACK && yout + 1 < ySize && xout + 1 < xSize && isHostile(xout+1, yout+1)) fields[xout+1][yout+1].highlightCode = CAN_GO;
-    break;
-
-  case TOWER:
-    for (int x = xout+1; x < xSize; x++) {
-      if (!isFriendly(x, yout)) {
-        fields[x][yout].highlightCode = CAN_GO;
-      } else break;
-
-      if (isHostile(x, yout)) break;
-    }
-    for (int x = xout-1; x >= 0; x--) {
-      if (!isFriendly(x, yout)) {
-        fields[x][yout].highlightCode = CAN_GO;
-      } else break;
-      if (isHostile(x, yout)) break;
-    }
-    for (int y = yout+1; y < ySize; y++) {
-      if (!isFriendly(xout, y)) {
-        fields[xout][y].highlightCode = CAN_GO;
-      } else break;
-      if (isHostile(xout, y)) break;
-    }
-    for (int y = yout-1; y >= 0; y--) {
-      if (!isFriendly(xout, y)) {
-        fields[xout][y].highlightCode = CAN_GO;
-      } else break;
-      if (isHostile(xout, y)) break;
-    }
-    break;
-
-  case HORSE:
-    if (xout+2 < xSize) {
-      if (yout+1 < ySize && !isFriendly(xout+2, yout+1)) fields[xout+2][yout+1].highlightCode = CAN_GO;
-      if (yout-1 > -1 && !isFriendly(xout+2, yout-1)) fields[xout+2][yout-1].highlightCode = CAN_GO;
-    }
-
-    if (xout-2 > -1) {
-      if (yout+1 < ySize && !isFriendly(xout-2, yout+1)) fields[xout-2][yout+1].highlightCode = CAN_GO;
-      if (yout-1 > -1 && !isFriendly(xout-2, yout-1)) fields[xout-2][yout-1].highlightCode = CAN_GO;
-    }
-
-    if (yout-2 > -1) {
-      if (xout+1 < xSize && !isFriendly(xout+1, yout-2)) fields[xout+1][yout-2].highlightCode = CAN_GO;
-      if (xout-1 > -1 && !isFriendly(xout-1, yout-2)) fields[xout-1][yout-2].highlightCode = CAN_GO;
-    }
-
-    if (yout+2 < ySize) {
-      if (xout+1 < xSize && !isFriendly(xout+1, yout+2)) fields[xout+1][yout+2].highlightCode = CAN_GO;
-      if (xout-1 > -1 && !isFriendly(xout-1, yout+2)) fields[xout-1][yout+2].highlightCode = CAN_GO;
-    }
-    break;
-
-
-  case BISHOP:
-     for (int s = 1; true; s++) {
-      int x = xout + s;
-      int y = yout + s;
-
-      if (x == xSize || y == ySize) break;
-      if(isFriendly(x, y)) break;
-      if (isHostile(x, y)) {
-        fields[x][y].highlightCode = CAN_GO; 
-        break;
-      }
-      fields[x][y].highlightCode = CAN_GO;
-    }
-  
-    for (int s = -1; true; s--) {
-      int x = xout + s;
-      int y = yout + s;
-
-      if (x < 0 || y < 0) break;
-      if (x == xSize || y == ySize) continue;
-      if(isFriendly(x, y)) break;
-      if (isHostile(x, y)) {
-        fields[x][y].highlightCode = CAN_GO; 
-        break;
-      }
-      fields[x][y].highlightCode = CAN_GO;
-    }
-  
-    for (int s = 1; true; s++) {
-      int x = xout + s;
-      int y = yout - s;
-
-      if (x == xSize || y == ySize) break;
-      if(x < 0 || y < 0) break;
-      if(isFriendly(x, y)) break;
-      if (isHostile(x, y)) {
-        fields[x][y].highlightCode = CAN_GO; 
-        break;
-      }
-      fields[x][y].highlightCode = CAN_GO;
-    }
- 
-    for (int s = -1; true; s--) {
-      int x = xout + s;
-      int y = yout - s;
-
-      if (x < 0 || y < 0) break;
-      if(x == xSize || y == ySize) break;
-      if(isFriendly(x, y)) break;
-      if (isHostile(x, y)) {
-        fields[x][y].highlightCode = CAN_GO; 
-        break;
-      }
-      fields[x][y].highlightCode = CAN_GO;
-    } break;
-
-
-  case KING:
-    if(xout+1 < xSize && yout+1 < ySize) if (!isFriendly(xout+1, yout+1)) fields[xout+1][yout+1].highlightCode = CAN_GO;
-    if(yout+1 < ySize) if (!isFriendly(xout+0, yout+1)) fields[xout+0][yout+1].highlightCode = CAN_GO;
-    if(xout-1 > -1 && yout+1 < ySize) if (!isFriendly(xout-1, yout+1)) fields[xout-1][yout+1].highlightCode = CAN_GO;
-    if(xout+1 < xSize) if (!isFriendly(xout+1, yout+0)) fields[xout+1][yout+0].highlightCode = CAN_GO;
-    if(xout+1 < xSize && yout-1 > -1) if (!isFriendly(xout+1, yout-1)) fields[xout+1][yout-1].highlightCode = CAN_GO;
-    if(xout-1 > -1 && yout-1 > -1) if (!isFriendly(xout-1, yout-1)) fields[xout-1][yout-1].highlightCode = CAN_GO;
-    if(xout-1 > -1) if (!isFriendly(xout-1, yout+0)) fields[xout-1][yout+0].highlightCode = CAN_GO;
-    if(yout-1 > -1) if (!isFriendly(xout+0, yout-1)) fields[xout+0][yout-1].highlightCode = CAN_GO;
-    break;
-
-
-
-  case QUEEN: 
-    for (int s = 1; true; s++) {
-      int x = xout + s;
-      int y = yout + s;
-
-      if (x == xSize || y == ySize) break;
-      if(isFriendly(x, y)) break;
-      if (isHostile(x, y)) {
-        fields[x][y].highlightCode = CAN_GO; 
-        break;
-      }
-      fields[x][y].highlightCode = CAN_GO;
-    }
-  
-    for (int s = -1; true; s--) {
-      int x = xout + s;
-      int y = yout + s;
-
-      if (x < 0 || y < 0) break;
-      if (x == xSize || y == ySize) continue;
-      if(isFriendly(x, y)) break;
-      if (isHostile(x, y)) {
-        fields[x][y].highlightCode = CAN_GO; 
-        break;
-      }
-      fields[x][y].highlightCode = CAN_GO;
-    }
-  
-    for (int s = 1; true; s++) {
-      int x = xout + s;
-      int y = yout - s;
-
-      if (x == xSize || y == ySize) break;
-      if(x < 0 || y < 0) break;
-      if(isFriendly(x, y)) break;
-      if (isHostile(x, y)) {
-        fields[x][y].highlightCode = CAN_GO; 
-        break;
-      }
-      fields[x][y].highlightCode = CAN_GO;
-    }
- 
-    for (int s = -1; true; s--) {
-      int x = xout + s;
-      int y = yout - s;
-
-      if (x < 0 || y < 0) break;
-      if(x == xSize || y == ySize) break;
-      if(isFriendly(x, y)) break;
-      if (isHostile(x, y)) {
-        fields[x][y].highlightCode = CAN_GO; 
-        break;
-      }
-      fields[x][y].highlightCode = CAN_GO;
-    }
-
-    for (int x = xout+1; x < xSize; x++) {
-      if (!isFriendly(x, yout)) {
-        fields[x][yout].highlightCode = CAN_GO;
-      } else break;
-
-      if (isHostile(x, yout)) break;
-    }
-    for (int x = xout-1; x >= 0; x--) {
-      if (!isFriendly(x, yout)) {
-        fields[x][yout].highlightCode = CAN_GO;
-      } else break;
-      if (isHostile(x, yout)) break;
-    }
-    for (int y = yout+1; y < ySize; y++) {
-      if (!isFriendly(xout, y)) {
-        fields[xout][y].highlightCode = CAN_GO;
-      } else break;
-      if (isHostile(xout, y)) break;
-    }
-    for (int y = yout-1; y >= 0; y--) {
-      if (!isFriendly(xout, y)) {
-        fields[xout][y].highlightCode = CAN_GO;
-      } else break;
-      if (isHostile(xout, y)) break;
-    }
-    break;
   }
-}
-
+  
   
   
 }
  
-  
-
-
-
-
-// TODO IMPLEMENT HAS MOVED IN XML
+ 
 class Field {
   int col;
   PVector pos;
@@ -532,7 +367,7 @@ class Figure {
   
  
 }
-class Game {
+ class Game {
   Board board;
   int state;
   
@@ -674,7 +509,6 @@ class Button {
     return false;
   }
 }
-
 public void openXMLSelector() {
   String dp = dataPath("");
   dp = dp.substring(0, dp.length()-5);
@@ -1036,8 +870,11 @@ class Networker {
       // WE GOT ACCEPTED!
       if (PApplet.parseInt(arguments.get(0))==WHITE) thisPlayerFaction = WHITE;
       else if (PApplet.parseInt(arguments.get(0))==BLACK) thisPlayerFaction = BLACK;
-
+      
+      
       game.board = new Board();
+      game.board.gID = PApplet.parseInt(arguments.get(1));
+      
       game.state = CONNECTED;
     }
 
@@ -1054,11 +891,19 @@ class Networker {
 
     if (command.equals("TURN")) {
       game.board.whoseTurn = PApplet.parseInt(arguments.get(0));
+      game.board.pmoves = new ArrayList<PossibleMove>();
+      
+      addMessage("LIST MOVES", new String[]{});
     }
     
     if (command.equals("CODE IS")) {
       browser.lastID = PApplet.parseInt(arguments.get(0));
       browser.nextCreationPossibility = millis() + PApplet.parseInt(arguments.get(1))*1000;
+      
+      for(GameLink glink : browser.glinks) {
+        glink.selected = false;
+        if(glink.id == browser.lastID) glink.selected = true;
+      }
     }
     
     if (command.equals("GAME")) {
@@ -1105,6 +950,23 @@ class Networker {
           i=0;
         }
       }
+    }
+    
+    
+    if(command.equals("POSSIBLE MOVE")) {
+      println(command, arguments.get(0), arguments.get(1), arguments.get(2), arguments.get(3));
+      game.board.pmoves.add(new PossibleMove(PApplet.parseInt(arguments.get(0)), PApplet.parseInt(arguments.get(1)), PApplet.parseInt(arguments.get(2)), PApplet.parseInt(arguments.get(3))));
+    }
+    
+    
+    if(command.equals("CHECK MATE")) {
+      game.board.isCheckMate = true;
+      game.board.winner = PApplet.parseInt(arguments.get(0)) == WHITE? "WHITE" : "BLACK";
+    }
+    
+    if(command.equals("SWITCH PAWN")) {
+      game.board.changePawn = true;
+      game.board.changePawnPos = new PVector(PApplet.parseFloat(arguments.get(0)), PApplet.parseFloat(arguments.get(1)));
     }
   }
 
@@ -1210,6 +1072,19 @@ class outMessage {
     lastTime = millis();
   }
 }
+class PossibleMove {
+  int fromX;
+  int fromY;
+  int toX;
+  int toY;
+  
+  PossibleMove(int p_fromX, int p_fromY, int p_toX, int p_toY) {
+    fromX = p_fromX;
+    fromY = p_fromY;
+    toX = p_toX;
+    toY = p_toY;
+  }
+}
 class Serverbrowser {
 
   PImage background;
@@ -1243,7 +1118,6 @@ class Serverbrowser {
   int mode = UNDEFINED;  
   int lastID = -1;
   int nextCreationPossibility = 0;
-
   int startOfScope = 0;
 
   Serverbrowser() {
@@ -1723,6 +1597,7 @@ public void load_images() {
     images.add(new ReferencedImage("/assets/background/studyroom.jpg", "study room"));
     images.add(new ReferencedImage("/assets/background/server.jpg", "server room"));
     images.add(new ReferencedImage("/assets/background/bnw.png", "checkmate"));
+    images.add(new ReferencedImage("/assets/background/gate.jpg", "stargate"));
   
   // Figures
     // White

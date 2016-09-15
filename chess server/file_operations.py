@@ -115,6 +115,8 @@ def loadGames():
         for figure in figures:
             g.board.getFieldByCords(figure.posx, figure.posy).figure = figure
 
+        g.board.postMoveUpdate()
+
         if g.password is None:
             g.password = ""
 

@@ -31,7 +31,6 @@ class Serverbrowser {
   int mode = UNDEFINED;  
   int lastID = -1;
   int nextCreationPossibility = 0;
-
   int startOfScope = 0;
 
   Serverbrowser() {

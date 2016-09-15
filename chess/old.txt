@@ -1,0 +1,227 @@
+void calculateMoves(int xout, int yout) {
+  Figure f = game.board.fields[xout][yout].figure;
+  // TODO IMPLEMENT BAUERNTAUSCH
+  // TODO BAUER DARF (NUR) ÜBER KREUZ SCHLAGEN
+  // TODO IMPLEMENT ROCHADE
+  // TODO IMPLEMENT EN PASSANT
+  switch(f.type) {
+  case PAWN: 
+    // Bewegung
+    if (f.col == WHITE && yout - 1 > 0 && !isFriendly(xout, yout-1) && !isHostile(xout, yout-1)) fields[xout][yout-1].highlightCode = CAN_GO;
+    if (f.col == WHITE && yout - 2 > 0 && !isFriendly(xout, yout-2) && !isFriendly(xout, yout-1) && !isHostile(xout, yout-1) && !isHostile(xout, yout-2) && !f.hasMoved) fields[xout][yout-2].highlightCode = CAN_GO;
+    if (f.col == BLACK && yout + 1 < ySize && !isFriendly(xout, yout+1) && !isHostile(xout, yout+1)) fields[xout][yout+1].highlightCode = CAN_GO;
+    if (f.col == BLACK && yout + 2 < ySize && !isFriendly(xout, yout+2) && !isFriendly(xout, yout+1) && !isHostile(xout, yout+1) && !isHostile(xout, yout+2) &&!f.hasMoved) fields[xout][yout+2].highlightCode = CAN_GO;
+    
+    // Schlagen "über Kreuz"
+    if (f.col == WHITE && yout - 1 > -1 && xout - 1 > -1 && isHostile(xout-1, yout-1)) fields[xout-1][yout-1].highlightCode = CAN_GO;
+    if (f.col == WHITE && yout - 1 > -1 && xout + 1 < xSize && isHostile(xout+1, yout-1)) fields[xout+1][yout-1].highlightCode = CAN_GO;
+    
+    if (f.col == BLACK && yout + 1 < ySize && xout - 1 > -1 && isHostile(xout-1, yout+1)) fields[xout-1][yout+1].highlightCode = CAN_GO;
+    if (f.col == BLACK && yout + 1 < ySize && xout + 1 < xSize && isHostile(xout+1, yout+1)) fields[xout+1][yout+1].highlightCode = CAN_GO;
+    break;
+
+  case TOWER:
+    for (int x = xout+1; x < xSize; x++) {
+      if (!isFriendly(x, yout)) {
+        fields[x][yout].highlightCode = CAN_GO;
+      } else break;
+
+      if (isHostile(x, yout)) break;
+    }
+    for (int x = xout-1; x >= 0; x--) {
+      if (!isFriendly(x, yout)) {
+        fields[x][yout].highlightCode = CAN_GO;
+      } else break;
+      if (isHostile(x, yout)) break;
+    }
+    for (int y = yout+1; y < ySize; y++) {
+      if (!isFriendly(xout, y)) {
+        fields[xout][y].highlightCode = CAN_GO;
+      } else break;
+      if (isHostile(xout, y)) break;
+    }
+    for (int y = yout-1; y >= 0; y--) {
+      if (!isFriendly(xout, y)) {
+        fields[xout][y].highlightCode = CAN_GO;
+      } else break;
+      if (isHostile(xout, y)) break;
+    }
+    break;
+
+  case HORSE:
+    if (xout+2 < xSize) {
+      if (yout+1 < ySize && !isFriendly(xout+2, yout+1)) fields[xout+2][yout+1].highlightCode = CAN_GO;
+      if (yout-1 > -1 && !isFriendly(xout+2, yout-1)) fields[xout+2][yout-1].highlightCode = CAN_GO;
+    }
+
+    if (xout-2 > -1) {
+      if (yout+1 < ySize && !isFriendly(xout-2, yout+1)) fields[xout-2][yout+1].highlightCode = CAN_GO;
+      if (yout-1 > -1 && !isFriendly(xout-2, yout-1)) fields[xout-2][yout-1].highlightCode = CAN_GO;
+    }
+
+    if (yout-2 > -1) {
+      if (xout+1 < xSize && !isFriendly(xout+1, yout-2)) fields[xout+1][yout-2].highlightCode = CAN_GO;
+      if (xout-1 > -1 && !isFriendly(xout-1, yout-2)) fields[xout-1][yout-2].highlightCode = CAN_GO;
+    }
+
+    if (yout+2 < ySize) {
+      if (xout+1 < xSize && !isFriendly(xout+1, yout+2)) fields[xout+1][yout+2].highlightCode = CAN_GO;
+      if (xout-1 > -1 && !isFriendly(xout-1, yout+2)) fields[xout-1][yout+2].highlightCode = CAN_GO;
+    }
+    break;
+
+
+  case BISHOP:
+     for (int s = 1; true; s++) {
+      int x = xout + s;
+      int y = yout + s;
+
+      if (x == xSize || y == ySize) break;
+      if(isFriendly(x, y)) break;
+      if (isHostile(x, y)) {
+        fields[x][y].highlightCode = CAN_GO; 
+        break;
+      }
+      fields[x][y].highlightCode = CAN_GO;
+    }
+  
+    for (int s = -1; true; s--) {
+      int x = xout + s;
+      int y = yout + s;
+
+      if (x < 0 || y < 0) break;
+      if (x == xSize || y == ySize) continue;
+      if(isFriendly(x, y)) break;
+      if (isHostile(x, y)) {
+        fields[x][y].highlightCode = CAN_GO; 
+        break;
+      }
+      fields[x][y].highlightCode = CAN_GO;
+    }
+  
+    for (int s = 1; true; s++) {
+      int x = xout + s;
+      int y = yout - s;
+
+      if (x == xSize || y == ySize) break;
+      if(x < 0 || y < 0) break;
+      if(isFriendly(x, y)) break;
+      if (isHostile(x, y)) {
+        fields[x][y].highlightCode = CAN_GO; 
+        break;
+      }
+      fields[x][y].highlightCode = CAN_GO;
+    }
+ 
+    for (int s = -1; true; s--) {
+      int x = xout + s;
+      int y = yout - s;
+
+      if (x < 0 || y < 0) break;
+      if(x == xSize || y == ySize) break;
+      if(isFriendly(x, y)) break;
+      if (isHostile(x, y)) {
+        fields[x][y].highlightCode = CAN_GO; 
+        break;
+      }
+      fields[x][y].highlightCode = CAN_GO;
+    } break;
+
+
+  case KING:
+    if(xout+1 < xSize && yout+1 < ySize) if (!isFriendly(xout+1, yout+1)) fields[xout+1][yout+1].highlightCode = CAN_GO;
+    if(yout+1 < ySize) if (!isFriendly(xout+0, yout+1)) fields[xout+0][yout+1].highlightCode = CAN_GO;
+    if(xout-1 > -1 && yout+1 < ySize) if (!isFriendly(xout-1, yout+1)) fields[xout-1][yout+1].highlightCode = CAN_GO;
+    if(xout+1 < xSize) if (!isFriendly(xout+1, yout+0)) fields[xout+1][yout+0].highlightCode = CAN_GO;
+    if(xout+1 < xSize && yout-1 > -1) if (!isFriendly(xout+1, yout-1)) fields[xout+1][yout-1].highlightCode = CAN_GO;
+    if(xout-1 > -1 && yout-1 > -1) if (!isFriendly(xout-1, yout-1)) fields[xout-1][yout-1].highlightCode = CAN_GO;
+    if(xout-1 > -1) if (!isFriendly(xout-1, yout+0)) fields[xout-1][yout+0].highlightCode = CAN_GO;
+    if(yout-1 > -1) if (!isFriendly(xout+0, yout-1)) fields[xout+0][yout-1].highlightCode = CAN_GO;
+    break;
+
+
+
+  case QUEEN: 
+    for (int s = 1; true; s++) {
+      int x = xout + s;
+      int y = yout + s;
+
+      if (x == xSize || y == ySize) break;
+      if(isFriendly(x, y)) break;
+      if (isHostile(x, y)) {
+        fields[x][y].highlightCode = CAN_GO; 
+        break;
+      }
+      fields[x][y].highlightCode = CAN_GO;
+    }
+  
+    for (int s = -1; true; s--) {
+      int x = xout + s;
+      int y = yout + s;
+
+      if (x < 0 || y < 0) break;
+      if (x == xSize || y == ySize) continue;
+      if(isFriendly(x, y)) break;
+      if (isHostile(x, y)) {
+        fields[x][y].highlightCode = CAN_GO; 
+        break;
+      }
+      fields[x][y].highlightCode = CAN_GO;
+    }
+  
+    for (int s = 1; true; s++) {
+      int x = xout + s;
+      int y = yout - s;
+
+      if (x == xSize || y == ySize) break;
+      if(x < 0 || y < 0) break;
+      if(isFriendly(x, y)) break;
+      if (isHostile(x, y)) {
+        fields[x][y].highlightCode = CAN_GO; 
+        break;
+      }
+      fields[x][y].highlightCode = CAN_GO;
+    }
+ 
+    for (int s = -1; true; s--) {
+      int x = xout + s;
+      int y = yout - s;
+
+      if (x < 0 || y < 0) break;
+      if(x == xSize || y == ySize) break;
+      if(isFriendly(x, y)) break;
+      if (isHostile(x, y)) {
+        fields[x][y].highlightCode = CAN_GO; 
+        break;
+      }
+      fields[x][y].highlightCode = CAN_GO;
+    }
+
+    for (int x = xout+1; x < xSize; x++) {
+      if (!isFriendly(x, yout)) {
+        fields[x][yout].highlightCode = CAN_GO;
+      } else break;
+
+      if (isHostile(x, yout)) break;
+    }
+    for (int x = xout-1; x >= 0; x--) {
+      if (!isFriendly(x, yout)) {
+        fields[x][yout].highlightCode = CAN_GO;
+      } else break;
+      if (isHostile(x, yout)) break;
+    }
+    for (int y = yout+1; y < ySize; y++) {
+      if (!isFriendly(xout, y)) {
+        fields[xout][y].highlightCode = CAN_GO;
+      } else break;
+      if (isHostile(xout, y)) break;
+    }
+    for (int y = yout-1; y >= 0; y--) {
+      if (!isFriendly(xout, y)) {
+        fields[xout][y].highlightCode = CAN_GO;
+      } else break;
+      if (isHostile(xout, y)) break;
+    }
+    break;
+  }
+}

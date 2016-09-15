@@ -20,6 +20,8 @@ class Game:
         self.creationtime = net.ti()
         self.movesmade = 0
         self.lastmovetime = net.ti()
+        self.checkMate = False
+        self.winner = ""
 
 
     def genID(self):
@@ -41,6 +43,16 @@ class Game:
         whiteName = "None" if self.playerWHITE is None else self.playerWHITE.name
         blackName = "None" if self.playerBLACK is None else self.playerBLACK.name
         net.sendToAllAll("GAME", [self.id, whiteName, blackName])
+
+
+    def getPlayercol(self, c):
+        if self.playerWHITE is not None:
+            if self.playerWHITE.client == c:
+                return WHITE
+        if self.playerBLACK is not None:
+            if self.playerBLACK.client == c:
+                return BLACK
+        return UNDEFINED
 
 
 def findGameByID(id):

@@ -7,6 +7,7 @@ from time import sleep
 
 frameCount = 0
 
+
 def setup():
     fileops.mkdir("xml")
     fileops.loadGames()
@@ -36,6 +37,7 @@ def collectGarbage():
             fileops.removeLine("./xml/packlist.chess", str(g.id)+str(":")+str(g.movesmade)+"\n")
             fileops.rmdir("./xml/"+str(g.id))
             print("Closed down " + str(g.id) + " for inactivity!")
+
 
 
 setup()

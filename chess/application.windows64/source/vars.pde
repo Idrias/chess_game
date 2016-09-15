@@ -79,6 +79,7 @@ void load_images() {
     images.add(new ReferencedImage("/assets/background/studyroom.jpg", "study room"));
     images.add(new ReferencedImage("/assets/background/server.jpg", "server room"));
     images.add(new ReferencedImage("/assets/background/bnw.png", "checkmate"));
+    images.add(new ReferencedImage("/assets/background/gate.jpg", "stargate"));
   
   // Figures
     // White
