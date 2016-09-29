@@ -72,7 +72,7 @@ class Board {
     // Draw background
     
     image(background, width/2, height/2);
-    if (whoseTurn == thisPlayerFaction) {if(whoseTurn==WHITE) background(255); else background(0);}
+    //if (whoseTurn == thisPlayerFaction) {if(whoseTurn==WHITE) background(255); else background(0);}
 
     fill(255);
     textSize(15);

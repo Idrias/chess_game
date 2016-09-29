@@ -141,7 +141,7 @@ class Serverbrowser {
 
 
   void draw() {
-    enterName.content = str(millis());
+    //enterName.content = str(millis());
     if (selJoin.state && !selCreate.state) mode = JOIN;
     else if (selCreate.state && !selJoin.state) mode = CREATE;
     else mode = UNDEFINED;

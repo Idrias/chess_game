@@ -108,7 +108,7 @@ class Board {
     // Draw background
     
     image(background, width/2, height/2);
-    if (whoseTurn == thisPlayerFaction) {if(whoseTurn==WHITE) background(255); else background(0);}
+    //if (whoseTurn == thisPlayerFaction) {if(whoseTurn==WHITE) background(255); else background(0);}
 
     fill(255);
     textSize(15);
@@ -965,8 +965,10 @@ class Networker {
     }
     
     if(command.equals("SWITCH PAWN")) {
+      print(arguments.get(0), arguments.get(1));
       game.board.changePawn = true;
       game.board.changePawnPos = new PVector(PApplet.parseFloat(arguments.get(0)), PApplet.parseFloat(arguments.get(1)));
+      game.board.checkclick();
     }
   }
 
@@ -1228,7 +1230,7 @@ class Serverbrowser {
 
 
   public void draw() {
-    enterName.content = str(millis());
+    //enterName.content = str(millis());
     if (selJoin.state && !selCreate.state) mode = JOIN;
     else if (selCreate.state && !selJoin.state) mode = CREATE;
     else mode = UNDEFINED;
@@ -1548,7 +1550,7 @@ final int ALL = 42;
 
 chess sketchRef = this;
 
-String IPPRESET = "192.168.178.21:6877";
+String IPPRESET = "84.200.52.231:80";
 // 192.168.178.21:6877
 // 84.200.52.231:6877
 

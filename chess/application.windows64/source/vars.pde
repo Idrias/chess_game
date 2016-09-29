@@ -30,7 +30,7 @@ final int ALL = 42;
 
 chess sketchRef = this;
 
-String IPPRESET = "192.168.178.21:6877";
+String IPPRESET = "84.200.52.231:80";
 // 192.168.178.21:6877
 // 84.200.52.231:6877
 

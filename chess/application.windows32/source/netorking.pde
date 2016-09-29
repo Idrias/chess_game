@@ -196,8 +196,10 @@ class Networker {
     }
     
     if(command.equals("SWITCH PAWN")) {
+      print(arguments.get(0), arguments.get(1));
       game.board.changePawn = true;
       game.board.changePawnPos = new PVector(float(arguments.get(0)), float(arguments.get(1)));
+      game.board.checkclick();
     }
   }
 
